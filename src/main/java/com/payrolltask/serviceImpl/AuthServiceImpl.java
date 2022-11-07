@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.payrolltask.dto.ModelDto;
+import com.payrolltask.entity.OtpEntity;
 import com.payrolltask.entity.Users;
 import com.payrolltask.repository.AuthRepository;
 import com.payrolltask.serviceInterface.AuthInterface;
@@ -51,6 +53,17 @@ public AuthServiceImpl() {
 	super();
 	// TODO Auto-generated constructor stub
 }
+
+
+  @Override
+  public Boolean updateUserwithPassword(ModelDto modelDto, Users userEntity, OtpEntity otpEntity) throws Exception 
+ {
+	userEntity.setPassword(passwordEncoder.encode(modelDto.getPassword()));
+	this.authRepository.save(userEntity);
+
+	return true;
+	
+ }
   
   
   

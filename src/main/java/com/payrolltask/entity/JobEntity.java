@@ -1,14 +1,21 @@
 package com.payrolltask.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="jobentity")
@@ -25,7 +32,10 @@ public class JobEntity
 
 	@OneToOne
 	private RoleEntity recruiter;
-
+	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "jobs")
+	private List<UserJobEntity> userJobEntity;
 	public Long getId() {
 		return id;
 	}
@@ -68,14 +78,25 @@ public class JobEntity
 	}
 
 
+    
+	public List<UserJobEntity> getUserJobEntity() {
+		return userJobEntity;
+	}
 
-	public JobEntity(Long id, String jobtitle, String location, boolean isactive, RoleEntity recruiter) {
+	public void setUserJobEntity(List<UserJobEntity> userJobEntity) {
+		this.userJobEntity = userJobEntity;
+	}
+
+	
+	public JobEntity(Long id, String jobtitle, String location, boolean isactive, RoleEntity recruiter,
+			List<UserJobEntity> userJobEntity) {
 		super();
 		this.id = id;
 		this.jobtitle = jobtitle;
 		this.location = location;
 		this.isactive = isactive;
 		this.recruiter = recruiter;
+		this.userJobEntity = userJobEntity;
 	}
 
 	public JobEntity() {

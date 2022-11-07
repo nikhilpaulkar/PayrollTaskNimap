@@ -4,6 +4,7 @@ package com.payrolltask.controller;
 import java.util.Calendar;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +22,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.payrolltask.dto.ErrorResponseDto;
 import com.payrolltask.dto.LoggerDto;
+import com.payrolltask.dto.ModelDto;
+import com.payrolltask.dto.OtpDto;
 import com.payrolltask.dto.SucessResponseDto;
 import com.payrolltask.dto.TokenKeys;
 import com.payrolltask.dto.UserDto;
+import com.payrolltask.entity.OtpEntity;
 import com.payrolltask.entity.Users;
+import com.payrolltask.exception.ResourceNotFoundException;
+import com.payrolltask.repository.AuthRepository;
+import com.payrolltask.repository.OtpRepository;
 import com.payrolltask.repository.UserRepository;
 import com.payrolltask.serviceImpl.AuthServiceImpl;
+import com.payrolltask.serviceImpl.EmailServiceImpl;
+import com.payrolltask.serviceImpl.OtpServiceImpl;
 import com.payrolltask.serviceImpl.UsersServiceImpl;
 import com.payrolltask.serviceInterface.LoggerServiceInerface;
 import com.payrolltask.utility.PasswordValidator;
@@ -53,6 +63,19 @@ public class AuthController
 	
 	@Autowired
 	private AuthServiceImpl authServiceImpl;
+	
+	@Autowired
+	private OtpServiceImpl otpServiceImpl;
+	
+	@Autowired
+	private OtpRepository otpRepository;
+	
+	@Autowired
+	private AuthRepository authRepository;
+	
+	@Autowired
+	private EmailServiceImpl emailServiceImpl;
+	
 	  
 	
     // Register API
@@ -103,7 +126,7 @@ public class AuthController
 	
 	 // Login API
 	 @PostMapping("/login")
-		public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthRequest authenticationRequest)
+	 public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthRequest authenticationRequest)
 		throws Exception 
 	    {
 
@@ -133,12 +156,12 @@ public class AuthController
 				
 			} catch (Exception e)
 			{
-				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "user not found "), HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(new ErrorResponseDto("user not found", "not found "), HttpStatus.NOT_FOUND);
 			}
 
 		}
 	   
-	 
+	 //logout API
 	 @Transactional
 	 @GetMapping("/logout")
 	 public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String token)
@@ -147,5 +170,91 @@ public class AuthController
 			return new ResponseEntity<>(new ErrorResponseDto("Logout Successfully", "logout  Success"), HttpStatus.OK);
 	}
 	   
+	 //forgot password API Send OTP
+	 @PostMapping("/forgotpassword")
+	 public ResponseEntity<?>forgotpassword(@RequestBody OtpDto otpDto, HttpServletRequest request)
+	 {
+		 try
+		 {
+			 Users user=authRepository.findByEmail(otpDto.getEmail());
+			 final int otp=emailServiceImpl.generateOTP();
+			 final String url = "OTP For Forgot Email Is-" + otp;
+			 
+			 Calendar calender = Calendar.getInstance();
+			 
+			 calender.add(Calendar.MINUTE, 5);
+			 
+			 otpDto.setOtp(otp);
 
+			 otpDto.setExpiredat(calender.getTime());
+             
+			 this.otpServiceImpl.saveotp(otpDto, user);
+			 this.emailServiceImpl.sendSimpleMessage(user.getEmail(), "abc", url);
+			 return ResponseEntity
+			 .ok(new SucessResponseDto("OTP send on email", "OTP send succesfully", "success"));
+
+		 }catch (Exception e)
+		 {
+			 
+				return ResponseEntity.ok(new ErrorResponseDto("Email not found", "not found"));
+
+			
+		 }
+	 }
+
+	 //Update password Using OTP 
+	 @PutMapping("/forgotpasswordconfirm")
+	 public ResponseEntity<?> createforgotpasswordconfirm(@RequestBody ModelDto modelDto) throws Exception
+	 {
+
+	 try 
+	 {
+		Users user = this.authRepository.findByEmail(modelDto.getEmail());
+
+		if (user == null)
+		{
+			return new ResponseEntity<>( new ErrorResponseDto("Invalid Email","please check entered Email"),HttpStatus.NOT_FOUND);
+		}
+
+		OtpEntity otpEntity = this.otpRepository.findByOtp(modelDto.getOtp());
+
+		if (otpEntity != null)
+		{
+			Users users = this.authRepository.findById(otpEntity.getUser().getId())
+			.orElseThrow(() -> new ResourceNotFoundException("user not found"));
+		}
+
+		else
+		{
+			throw new Exception("otp not found");
+		}
+		try
+		{
+			String password = modelDto.getPassword();
+
+			{
+				if (PasswordValidator.isValid(password))
+				{
+
+				 }
+				else
+				{
+					throw new Exception("not found");
+				}
+				}
+		}
+
+		catch (Exception e)
+		 {
+					return ResponseEntity.ok(new ErrorResponseDto(
+					 "Password should have Minimum 8","Password validation not done"));
+		 }
+
+		 this.authServiceImpl.updateUserwithPassword(modelDto, user, otpEntity);
+		 return new ResponseEntity<>(new SucessResponseDto("update", "update sucessfully", "updated"),HttpStatus.OK);
+		} catch (Exception e)
+	    {
+		 return new ResponseEntity<>( new ErrorResponseDto("Invalid Otp","please check entered otp"),HttpStatus.NOT_FOUND);
+	    }
+	}
 }
