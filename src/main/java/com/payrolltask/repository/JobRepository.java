@@ -1,5 +1,6 @@
 package com.payrolltask.repository;
 
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -13,10 +14,11 @@ import com.payrolltask.serviceInterface.IJobListDto;
 public interface JobRepository extends JpaRepository<JobEntity,Long>
 {
 
-	Page<IJobListDto> findByOrderById(Pageable pagable, Class<IJobListDto> class1);
+	Page<IJobListDto> findByOrderByIdDesc(Pageable pagable, Class<IJobListDto> class1);
 
 	Page<IJobListDto> findByjobtitle(String search, Pageable pagable, Class<IJobListDto> class1);
 
-	//List<JobEntity> findById(List<Long> jobId);
+
+	List<JobEntity> findByIdIn(List<Long> jobId);
 
 }

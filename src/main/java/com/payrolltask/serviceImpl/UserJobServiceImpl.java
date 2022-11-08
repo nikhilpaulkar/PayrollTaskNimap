@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.payrolltask.dto.UserJobDto;
@@ -20,7 +22,9 @@ import com.payrolltask.repository.RoleRepository;
 import com.payrolltask.repository.UserJobRepository;
 import com.payrolltask.repository.UserRepository;
 import com.payrolltask.repository.UserRoleRepository;
+import com.payrolltask.serviceInterface.IUserJobListDto;
 import com.payrolltask.serviceInterface.UserJobServiceInterface;
+import com.payrolltask.utility.Pagination;
 
 @Service
 public class UserJobServiceImpl implements UserJobServiceInterface 
@@ -50,58 +54,52 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 	  Users users = userRepository.findById(userJobDto.getUserId()).orElseThrow(() ->
 	  new ResourceNotFoundException("user not found"));
 	  
-	  final String url = "job has been successfully applied";
-
-	  List<JobEntity> jobEntity = jobRepository.findById(userJobDto.getJobId());
+	  long id=users.getId();
+      UserRoleEntity userRoleEntity= userRoleRepository.findTaskRoleIdByTaskUserId(id);
+      String roleName=userRoleEntity.getTask().getRole().getRoleName();
+      System.out.println("Role name:"+roleName);
+      
+      
+	 
+	  List<JobEntity> jobEntity = jobRepository.findByIdIn(userJobDto.getJobId());
 		
 	  if (jobEntity.size() == userJobDto.getJobId().size()) 
 	  {
-//		ArrayList<UserJobEntity> userJobList = new ArrayList<>();
+		 
+		ArrayList<UserJobEntity> userJobList = new ArrayList<>();
 			
 		for (int i = 0; i < jobEntity.size(); i++)
 		{
-//			UserJobEntity userJob = new UserJobEntity();
+			UserJobEntity userJob = new UserJobEntity();
 			
-//			userJob.setUser(users);
-//			userJob.setJobs(jobEntity.get(i));
-//			userJobList.add(userJob);
-//			userJobRepository.saveAll(userJobList);
-				
-//			String a = users.getEmail();
-
-//			this.emailServiceImpl.sendSimpleMessage(users.getEmail(), "subject", url);
-//				
-//			List<RoleEntity> role = this.roleRepository.findAll();
-//
-//			String roleName = role.get(1).getRoleName();
+			userJob.setUser(users);
+			userJob.setJobs(jobEntity.get(i));
 			
-//			String role1 = role.get(2).getRoleName();
+			userJobList.add(userJob);
+			userJobRepository.saveAll(userJobList);
 				
-
-			if (roleName.equals("recruiter")) 
+			
+			List<RoleEntity> role = this.roleRepository.findAll();
+            System.out.println("what is your role");
+		    if (roleName.equals("candidate")) 
 			{
-				Long li = role.get(1).getId();
-//
-		//		UserRoleEntity userrole = this.userRoleRepository.findTaskRoleIdByTaskUserId(li);
-
-//				String email = userrole.getUsers().getEmail();
-					
-//               this.emailServiceImpl.sendSimpleMessage(email, "subject", url);
+				System.out.println("sdjk"+users.getEmail());
+				String email = users.getEmail();
+				
+                this.emailServiceImpl.sendMail(email, "job has been applied success", email,users);
+			    
 			}
-
-			else if (role.equals("candidate"))
-			{
-//			 Long l = role.get(2).getId();
+//		    if (roleName.equals("recuriter"))
+//			{
+//		    	
+//			   
+//			   String emaill = users.getEmail();
 //
-//			 UserRoleEntity role = this.userRoleRepository.findTaskRoleIdByTaskUserId(l);
-			 
-			 
-//			 String email = role.getUsers().getEmail();
-//
-	//		 this.emailServiceImpl.sendSimpleMessage(email, "subject", url);
+//			   this.emailServiceImpl.sendSimpleMessage(emaill, "job has been applied success", emaill);
 //					
-			}
+//			}
 		  }
+		 
 		} 
 		else
 		{
@@ -109,6 +107,18 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 		}
 
 	}
+
+  @Override
+  public Page<IUserJobListDto> getAllcandidate(String search, String pageNumber, String pageSize)
+  {
+		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
+		if((search=="")||(search==null)||(search.length()==0))
+		{
+			return userJobRepository.findByOrderByIdAsc(pagable,IUserJobListDto.class);
+		}
+		return null;
+	
+ }
 
 	
 

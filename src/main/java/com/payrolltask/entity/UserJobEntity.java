@@ -8,10 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="userjob")
+@Where(clause="isactive=true")
+@SQLDelete(sql="UPDATE userjob SET isactive=false WHERE id=?")
 public class UserJobEntity
 {
 	@Id
@@ -26,6 +31,8 @@ public class UserJobEntity
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
     private JobEntity jobs;
+	
+	private boolean isactive=true;
 
 
 	public Long getId() {
@@ -57,12 +64,25 @@ public class UserJobEntity
 		this.jobs = jobs;
 	}
 
+    
+	public boolean isIsactive() {
+		return isactive;
+	}
 
-	public UserJobEntity(Long id, Users user, JobEntity jobs) {
+
+	public void setIsactive(boolean isactive) {
+		this.isactive = isactive;
+	}
+
+
+	
+
+	public UserJobEntity(Long id, Users user, JobEntity jobs, boolean isactive) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.jobs = jobs;
+		this.isactive = isactive;
 	}
 
 
