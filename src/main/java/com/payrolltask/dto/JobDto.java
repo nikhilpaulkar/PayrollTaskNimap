@@ -24,12 +24,15 @@ public class JobDto
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	
+	
 	public Long getRecruiter() {
 		return recruiter;
 	}
 	public void setRecruiter(Long recruiter) {
 		this.recruiter = recruiter;
 	}
+	
 	public JobDto(Long id, String jobtitle, String location, Long recruiter) {
 		super();
 		this.id = id;

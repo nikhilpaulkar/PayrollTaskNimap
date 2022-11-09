@@ -11,6 +11,6 @@ import com.payrolltask.serviceInterface.IUserJobListDto;
 public interface UserJobRepository extends JpaRepository<UserJobEntity, Long>
 {
 
-	Page<IUserJobListDto> findByOrderByIdAsc(Pageable pagable, Class<IUserJobListDto> class1);
+	Page<IUserJobListDto> findByOrderByIdDesc(Pageable pagable, Class<IUserJobListDto> class1);
 
 }

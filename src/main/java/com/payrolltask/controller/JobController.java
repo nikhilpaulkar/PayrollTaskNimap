@@ -1,5 +1,7 @@
 package com.payrolltask.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -29,18 +31,17 @@ public class JobController
   private JobServiceInterface jobServiceInterface;
   
   @PostMapping()
-	public ResponseEntity<?>applyjob(@RequestBody JobDto jobDto)
+	public ResponseEntity<?>applyjob(@RequestBody JobDto jobDto,HttpServletRequest request)
 	{
-		try
+	  try
 		{
-			jobServiceInterface.addjob(jobDto);
-			return new ResponseEntity<>(new SucessResponseDto("add job","successfully", "success"),HttpStatus.CREATED);
-			
-		}catch (Exception e)
-		{
-			  return new ResponseEntity<>(new ErrorResponseDto( "Already add  ","already add"),HttpStatus.BAD_REQUEST);
+		jobServiceInterface.addjob(jobDto,request);
+		return new ResponseEntity<>(new SucessResponseDto("add job","successfully", "success"),HttpStatus.CREATED);
+	   }catch (Exception e)
+	  {
+		  return new ResponseEntity<>(new ErrorResponseDto( e.getMessage(),"already add"),HttpStatus.BAD_REQUEST);
 
-		}
+	  }
 	}
 	
 	@GetMapping()
@@ -53,7 +54,7 @@ public class JobController
 		Page<IJobListDto> entity= jobServiceInterface.getAllJob(search,pageNumber,pageSize);
 		if(entity.getTotalElements()!=0)
 		{
-			return new ResponseEntity<>(entity.getContent(), HttpStatus.OK);
+			return new ResponseEntity<>(new SucessResponseDto("success","successfully", entity.getContent()),HttpStatus.CREATED);
 		}
 		else
 		{
@@ -76,33 +77,33 @@ public class JobController
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?>updateByJobId(@RequestBody JobDto jobDto,@PathVariable Long id)
+	public ResponseEntity<?>updateByJobId(@RequestBody JobDto jobDto,@PathVariable Long id,HttpServletRequest request)
 	{
 		try
 		{
 			
-		  this.jobServiceInterface.updatejob(jobDto, id);
+		  this.jobServiceInterface.updatejob(jobDto, id,request);
 		  return new ResponseEntity<>(new SucessResponseDto("update", "update sucessfully", "updated"),HttpStatus.OK);
 	
 		}catch(Exception e)
 		{
-			return new ResponseEntity<>(new ErrorResponseDto("Please Enter Valid JobId..", "Not Updated Data.."),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(),"not found"),HttpStatus.NOT_FOUND);
 		}
 			
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletejob(@PathVariable Long id)
+	public ResponseEntity<?> deletejob(@PathVariable Long id,HttpServletRequest request)
 	{
 
 		try 
 		{
-			this.jobServiceInterface.deletejob(id);
+			this.jobServiceInterface.deletejob(id,request);
 			return new  ResponseEntity<>(new SucessResponseDto("Success","Success", "Deleted Successfully!"),HttpStatus.OK);
 		}catch(ResourceNotFoundException e) 
 		{
 
-			return new ResponseEntity<>( new ErrorResponseDto("not found","job Not Found"),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>( new ErrorResponseDto(e.getMessage(),"not found"),HttpStatus.NOT_FOUND);
 	    }
 	
 }

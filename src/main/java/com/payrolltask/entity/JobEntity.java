@@ -29,7 +29,6 @@ public class JobEntity
 	private String jobtitle;
 	private String location;
 	private boolean isactive=true;
-
 	@OneToOne
 	private RoleEntity recruiter;
 	
@@ -69,17 +68,8 @@ public class JobEntity
 	}
 
 	
-	public RoleEntity getRecruiter() {
-		return recruiter;
-	}
 
-	public void setRecruiter(RoleEntity recruiter) {
-		this.recruiter = recruiter;
-	}
-
-
-    
-	public List<UserJobEntity> getUserJobEntity() {
+    public List<UserJobEntity> getUserJobEntity() {
 		return userJobEntity;
 	}
 
@@ -88,6 +78,16 @@ public class JobEntity
 	}
 
 	
+	public RoleEntity getRecruiter() {
+		return recruiter;
+	}
+
+	public void setRecruiter(RoleEntity recruiter) {
+		this.recruiter = recruiter;
+	}
+
+	
+
 	public JobEntity(Long id, String jobtitle, String location, boolean isactive, RoleEntity recruiter,
 			List<UserJobEntity> userJobEntity) {
 		super();

@@ -50,12 +50,13 @@ public class UserJobController
 		Page<IUserJobListDto> entity= userJobServiceInterface.getAllcandidate(search,pageNumber,pageSize);
 		if(entity.getTotalElements()!=0)
 		{
-			return new ResponseEntity<>(entity.getContent(), HttpStatus.OK);
+			return new ResponseEntity<>(new SucessResponseDto("User-JOB List","Success", entity.getContent()),HttpStatus.ACCEPTED);
 		}
 		else
 		{
-		return new ResponseEntity<>("fail",HttpStatus.BAD_REQUEST);
+		   return new ResponseEntity<>(new ErrorResponseDto("not found","not found"),HttpStatus.NOT_FOUND);
 	    }
 	}
 	
 }
+
