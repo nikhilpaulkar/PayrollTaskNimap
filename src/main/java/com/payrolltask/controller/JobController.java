@@ -58,7 +58,7 @@ public class JobController
 		}
 		else
 		{
-		return new ResponseEntity<>("fail",HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>( new ErrorResponseDto("not found"," Not Found"),HttpStatus.NOT_FOUND);
 	    }
 	 }
 

@@ -40,6 +40,19 @@ public class EmailServiceImpl
 		javaMailSender.send(message);
 
 	}
+	
+	public String mail(String emailTo, String subject, String job)
+	{
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+		
+		simpleMailMessage.setFrom("nikhilpaulkar2@gmail.com");
+		simpleMailMessage.setTo(emailTo);
+		simpleMailMessage.setSubject("Apply sucess");
+		simpleMailMessage.setText(" apply  job  successfully");
+		javaMailSender.send(simpleMailMessage);
+		return "Email Send Success";
+	}
+
 
 	public int generateOTP() 
 	{

@@ -1,5 +1,6 @@
 package com.payrolltask.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,6 +31,11 @@ public class JobEntity
 	private Long id;
 	private String jobtitle;
 	private String location;
+	@UpdateTimestamp
+    private Date updatedat;
+	
+	@CreationTimestamp
+    private Date createdat;
 	private boolean isactive=true;
 	@OneToOne
 	private RoleEntity recruiter;
@@ -88,12 +96,32 @@ public class JobEntity
 
 	
 
-	public JobEntity(Long id, String jobtitle, String location, boolean isactive, RoleEntity recruiter,
-			List<UserJobEntity> userJobEntity) {
+	public Date getUpdatedat() {
+		return updatedat;
+	}
+
+	public void setUpdatedat(Date updatedat) {
+		this.updatedat = updatedat;
+	}
+
+	public Date getCreatedat() {
+		return createdat;
+	}
+
+	public void setCreatedat(Date createdat) {
+		this.createdat = createdat;
+	}
+
+	
+
+	public JobEntity(Long id, String jobtitle, String location, Date updatedat, Date createdat, boolean isactive,
+			RoleEntity recruiter, List<UserJobEntity> userJobEntity) {
 		super();
 		this.id = id;
 		this.jobtitle = jobtitle;
 		this.location = location;
+		this.updatedat = updatedat;
+		this.createdat = createdat;
 		this.isactive = isactive;
 		this.recruiter = recruiter;
 		this.userJobEntity = userJobEntity;

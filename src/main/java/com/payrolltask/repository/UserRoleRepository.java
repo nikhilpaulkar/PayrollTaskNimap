@@ -27,12 +27,16 @@ public interface UserRoleRepository extends JpaRepository< UserRoleEntity, Long>
 	UserRoleEntity findTaskRoleIdByTaskUserId(long id);
 
 	@Transactional
-	@Query(value="SELECT * from userroleentity t WHERE t.user_id=:user_id",nativeQuery = true)
+	@Query(value="SELECT * from userrole t WHERE t.user_id=:user_id",nativeQuery = true)
 	List<UserRoleEntity> findByUserId(@Param("user_id")Long user_id);
 
     @Transactional
-	@Query(value="SELECT * from userroleentity t WHERE t.role_id=:role_id",nativeQuery = true)
+	@Query(value="SELECT * from userrole t WHERE t.role_id=:role_id",nativeQuery = true)
 	List<UserRoleEntity> findRoleId(@Param ("role_id")Long role_id);
+
+    @Transactional
+   	@Query(value="SELECT * from userrole t WHERE t.role_id=:role_id",nativeQuery = true)
+	List<UserRoleEntity> findByRoleId(@Param ("role_id")Long role_id);
 
 	
 

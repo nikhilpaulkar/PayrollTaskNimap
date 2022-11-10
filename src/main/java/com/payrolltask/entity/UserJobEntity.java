@@ -1,5 +1,7 @@
 package com.payrolltask.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -26,7 +30,11 @@ public class UserJobEntity
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
     private Users user;
-
+	@UpdateTimestamp
+    private Date updatedat;
+	
+	@CreationTimestamp
+    private Date createdat;
 	
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -75,12 +83,31 @@ public class UserJobEntity
 	}
 
 
-	
+	public Date getUpdatedat() {
+		return updatedat;
+	}
 
-	public UserJobEntity(Long id, Users user, JobEntity jobs, boolean isactive) {
+	public void setUpdatedat(Date updatedat) {
+		this.updatedat = updatedat;
+	}
+     public Date getCreatedat() {
+		return createdat;
+	}
+
+
+	public void setCreatedat(Date createdat) {
+		this.createdat = createdat;
+	}
+
+
+
+
+	public UserJobEntity(Long id, Users user, Date updatedat, Date createdat, JobEntity jobs, boolean isactive) {
 		super();
 		this.id = id;
 		this.user = user;
+		this.updatedat = updatedat;
+		this.createdat = createdat;
 		this.jobs = jobs;
 		this.isactive = isactive;
 	}

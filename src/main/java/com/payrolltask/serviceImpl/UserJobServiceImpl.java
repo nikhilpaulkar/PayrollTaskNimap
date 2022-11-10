@@ -26,6 +26,7 @@ import com.payrolltask.repository.UserRoleRepository;
 import com.payrolltask.serviceInterface.IUserJobListDto;
 import com.payrolltask.serviceInterface.UserJobServiceInterface;
 import com.payrolltask.utility.Pagination;
+import com.payrolltask.websecurity.JwtTokenUtil;
 
 @Service
 public class UserJobServiceImpl implements UserJobServiceInterface 
@@ -48,6 +49,8 @@ public class UserJobServiceImpl implements UserJobServiceInterface
   @Autowired
   private RoleRepository roleRepository;
   
+  @Autowired
+  private JwtTokenUtil jwtTokenUtil;
   
   @Override
   public void adduserjob(UserJobDto userJobDto,HttpServletRequest requesst)
@@ -55,7 +58,12 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 	  Users user=userRepository.findById(userJobDto.getUserId()).orElseThrow(()-> 
 	  new ResourceNotFoundException("Not Found UserId"));
 		
+	  final String header=requesst.getHeader("Authorization");
+	  String requestToken=header.substring(7);
 
+	  final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
+	   
+	  Users user1=userRepository.findByEmail(email);
 		
 		ArrayList<JobEntity> userJobs = new ArrayList<>();
 
@@ -63,13 +71,12 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 		{
 			
 			Long JobId=userJobDto.getJobId().get(i);
-			System.out.println("JobId"+JobId);
+			
 			JobEntity job=jobRepository.findById(JobId).orElseThrow(()->
 			new ResourceNotFoundException("Not Found Job Id"));
 			
-			System.out.println("Id");
+			
 			List<UserRoleEntity> userRole=userRoleRepository.findByUserId(user.getId());
-			System.err.println("UserRole..."+userRole);
 			
 			userJobs.add(job);
 			UserJobEntity userJob=new UserJobEntity();
@@ -77,66 +84,58 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 			userJob.setUser(user);
 			userJobRepository.save(userJob);
 			
-			System.out.println("Size"+userRole.size());
-	
 			
 			UserRoleEntity role=userRole.get(i);
 			
 			Long Id=role.getTask().getRole().getId();
-			for(int i1=0;i1<Id;i1++)
-			{
+			
+			List<UserRoleEntity> user11=userRoleRepository.findByRoleId(Id);
 
-				System.out.println("Role"+Id.SIZE);
-				
+			String emails = null;
+			for(int i1=0;i1<user11.size();i1++)
+			{
+				UserRoleEntity email1=user11.get(i);
+				 emails=email1.getTask().getUser().getEmail();
 			}
 			String roleName=role.getTask().getRole().getRoleName();
-			System.out.println("RoleName"+roleName);
+			
+			System.out.println("RoleName:"+roleName);
 			if(roleName.equals("candidate"))
 			{
-				emailServiceImpl.sendSimpleMessage(user.getEmail(), "Candidate Apply sucessfully To Job", job.getJobtitle());
+				emailServiceImpl.mail(user1.getEmail(), "apply  job  successfully",job.getJobtitle());
 				
 			}
 			
-
-		
-			System.out.println("JobId"+JobId);
 
 			JobEntity job1=jobRepository.findById(JobId).orElseThrow(()->
 			new ResourceNotFoundException("Not Found Job Id"));
-			System.out.println("jkjksd");
+			
 			RoleEntity recruiterId= job1.getRecruiter();
-			System.out.println("welcom");
-			System.out.println("Role"+recruiterId);
+		
+			
 			Long recId=recruiterId.getId();
-			System.out.println("hello"+recruiterId.getId());
+			
 			RoleEntity roles=roleRepository.findById(recId).orElseThrow(()->
 			new ResourceNotFoundException("Not Found RoleId.."));
-			//3 --Recruiter
+			
 			Long RoleId=roles.getId();
-			System.out.println("RoleId"+RoleId);
+			
+		    List<UserRoleEntity> userRoles=userRoleRepository.findRoleId(RoleId);
 			
 			
-			
-			List<UserRoleEntity> userRoles=userRoleRepository.findRoleId(RoleId);
-			
-			System.out.println("UserRoles"+userRoles);
-			
-//			System.out.println("UserRoles"+userRoles.get(i));
 			String roleName1=roles.getRoleName();
 			
 			
 			for(int i1=0;i1<userRoles.size();i1++)
 				
 			{
-				String email=userRoles.get(i1).getTask().getUser().getEmail();
 				
-				System.out.println("RoleName1..."+roleName1);
-
-					
+				String email2=userRoles.get(i1).getTask().getUser().getEmail();
+				System.out.println("recuiter=="+roleName1);
 					if(roleName1.equals("recruiter"))
 					{
 						
-						emailServiceImpl.sendSimpleMessage(email, "Candidate Apply sucessfully To Job", job.getJobtitle());
+						emailServiceImpl.mail(email2, "apply job successfully", job1.getJobtitle());
 
 					}
 			}
