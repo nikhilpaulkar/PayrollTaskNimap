@@ -1,5 +1,7 @@
 package com.payrolltask.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,9 @@ import com.payrolltask.dto.ErrorResponseDto;
 import com.payrolltask.dto.JobDto;
 import com.payrolltask.dto.SucessResponseDto;
 import com.payrolltask.exception.ResourceNotFoundException;
+import com.payrolltask.serviceInterface.IJobGetListDto;
 import com.payrolltask.serviceInterface.IJobListDto;
+import com.payrolltask.serviceInterface.IRecruiterJobListDto;
 import com.payrolltask.serviceInterface.JobServiceInterface;
 
 @RequestMapping("/job")
@@ -68,8 +72,8 @@ public class JobController
 	{
 		try 
 		{
-          JobDto jobDto=this.jobServiceInterface.getjobById(id);
-          return new ResponseEntity<>(new SucessResponseDto("Success","Success", jobDto),HttpStatus.OK);
+          List<IJobGetListDto> jobDto=this.jobServiceInterface.getjobById(id);
+          return new ResponseEntity<>(new SucessResponseDto("Success","Success",jobDto),HttpStatus.OK);
 		}catch(ResourceNotFoundException e) 
 		{
 			return new ResponseEntity<>( new ErrorResponseDto("not found","job Not Found"),HttpStatus.NOT_FOUND);
@@ -106,5 +110,19 @@ public class JobController
 			return new ResponseEntity<>( new ErrorResponseDto(e.getMessage(),"not found"),HttpStatus.NOT_FOUND);
 	    }
 	
-}
+    }
+	
+	@GetMapping("/getjobbyrecruiterid")
+	public ResponseEntity<?> getjobbyrecruiterid(HttpServletRequest request)
+	{
+		try 
+		{
+		List<IRecruiterJobListDto> job=	this.jobServiceInterface.getJobbyRecruiterId(request);
+			return new  ResponseEntity<>(new SucessResponseDto(" get job List","Success", job),HttpStatus.OK);
+		}catch(ResourceNotFoundException e) 
+		{
+
+			return new ResponseEntity<>( new ErrorResponseDto(e.getMessage(),"not found"),HttpStatus.NOT_FOUND);
+	    }
+	}
 }

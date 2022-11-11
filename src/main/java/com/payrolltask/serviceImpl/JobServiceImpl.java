@@ -1,5 +1,7 @@
 package com.payrolltask.serviceImpl;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,9 @@ import com.payrolltask.repository.JobRepository;
 import com.payrolltask.repository.RoleRepository;
 import com.payrolltask.repository.UserRepository;
 import com.payrolltask.repository.UserRoleRepository;
+import com.payrolltask.serviceInterface.IJobGetListDto;
 import com.payrolltask.serviceInterface.IJobListDto;
+import com.payrolltask.serviceInterface.IRecruiterJobListDto;
 import com.payrolltask.serviceInterface.JobServiceInterface;
 import com.payrolltask.utility.Pagination;
 import com.payrolltask.websecurity.JwtTokenUtil;
@@ -95,18 +99,14 @@ public class JobServiceImpl implements JobServiceInterface
   }
 
   @Override
-  public JobDto getjobById(Long id)
+  public List<IJobGetListDto> getjobById(Long id)
   {
 	   JobEntity jobEntity=jobRepository.findById(id).orElseThrow(()->
 	   new ResourceNotFoundException("job id not found"));
 	  
 	  
-		JobDto jobDto=new JobDto();
-		jobDto.setId(jobEntity.getId());
-		jobDto.setJobtitle(jobEntity.getJobtitle());
-		jobDto.setLocation(jobEntity.getLocation());
-		
-		return jobDto;
+		List<IJobGetListDto> jobDtos=jobRepository.findById(id,IJobGetListDto.class);
+		return jobDtos ;
 	
       
   }
@@ -172,4 +172,43 @@ public class JobServiceImpl implements JobServiceInterface
       }
   
 }
+
+
+  @Override
+  public List<IRecruiterJobListDto> getJobbyRecruiterId(HttpServletRequest request) 
+  {
+	  
+	  final String header=request.getHeader("Authorization");
+	  String requestToken=header.substring(7);
+
+	  final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
+	   
+	  Users user1=userRepository.findByEmail(email);
+      Long id1=user1.getId();
+      UserRoleEntity userRoleEntity= userRoleRepository.findTaskRoleIdByTaskUserId(id1);
+      String name=userRoleEntity.getTask().getRole().getRoleName();
+      
+      Long roleid= userRoleEntity.getTask().getRole().getId();
+      System.out.println("Role Id="+roleid);
+      System.out.println("Role name:"+name);
+      
+      List<JobEntity> job=jobRepository.findByRecruiterById(roleid);
+       new ResourceNotFoundException("not found recruiter id");
+      System.out.println("recriter id"+job);
+      if(name.equals("recruiter"))
+      {
+    	  
+          List<IRecruiterJobListDto> recruiterid=jobRepository.findByRecruiterId(roleid);  
+         return recruiterid;
+      }   
+      else
+      {
+    	   throw    new ResourceNotFoundException("only recruiter can get job list !!!");
+    	   
+      }
+	
+	
+  }
+  
+  
 }

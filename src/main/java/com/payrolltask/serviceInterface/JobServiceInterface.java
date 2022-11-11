@@ -1,5 +1,7 @@
 package com.payrolltask.serviceInterface;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
@@ -12,9 +14,11 @@ public interface JobServiceInterface
 
 	Page<IJobListDto> getAllJob(String search, String pageNumber, String pageSize);
 
-	JobDto getjobById(Long id);
+	List<IJobGetListDto> getjobById(Long id);
 
 	JobDto updatejob(JobDto jobDto, Long id,HttpServletRequest request);
 
 	void deletejob(Long id,HttpServletRequest request);
+	
+	List<IRecruiterJobListDto> getJobbyRecruiterId(HttpServletRequest request);
 }

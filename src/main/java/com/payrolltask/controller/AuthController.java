@@ -198,7 +198,6 @@ public class AuthController
 			 
 				return ResponseEntity.ok(new ErrorResponseDto("Email not found", "not found"));
 
-			
 		 }
 	 }
 
