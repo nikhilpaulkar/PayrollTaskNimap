@@ -1,5 +1,8 @@
 package com.payrolltask.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.payrolltask.dto.RoleDto;
 import com.payrolltask.entity.RoleEntity;
 import com.payrolltask.exception.ResourceNotFoundException;
+import com.payrolltask.repository.RolePemissionRespository;
 import com.payrolltask.repository.RoleRepository;
+import com.payrolltask.repository.UserRoleRepository;
 import com.payrolltask.serviceInterface.IRoleListDto;
 import com.payrolltask.serviceInterface.RoleServiceInterface;
 import com.payrolltask.utility.Pagination;
@@ -19,6 +24,11 @@ public class RoleServiceImpl implements RoleServiceInterface
   @Autowired
   private RoleRepository roleRepository;
 	
+  @Autowired
+  private UserRoleRepository userRoleRepository;
+  
+  @Autowired
+  private RolePemissionRespository  rolePemissionRespository;
     // add role
 	@Override
 	public void addrole(RoleDto roleDto)
@@ -81,6 +91,33 @@ public class RoleServiceImpl implements RoleServiceInterface
 		this.roleRepository.findById(id).orElseThrow( () ->
 		new ResourceNotFoundException("role Not Found With Id :"+id));
 		this.roleRepository.deleteById(id);
+	}
+
+	@Override
+	public ArrayList<String> getPermissionByUserId(Long id)
+	{
+		ArrayList<RoleIdListDto> roleIds = userRoleRepository.findByPkUserId(userId, RoleIdListDto.class);
+		ArrayList<Long> roles = new ArrayList<>();
+
+		for (int i = 0; i < roleIds.size(); i++)
+		{
+
+			roles.add(roleIds.get(i).getPkRoleId());
+
+		}
+
+		List<IPermissionIdList> rolesPermission = rolePermissionRepository.findPkPermissionByPkRoleIdIn(roles, IPermissionIdList.class);
+		ArrayList<String> permissions = new ArrayList<>();
+
+		for (IPermissionIdList element : rolesPermission)
+		{
+
+			permissions.add(element.getPkPermissionActionName());
+
+		}
+
+		return permissions;
+		
 	}
 
 }

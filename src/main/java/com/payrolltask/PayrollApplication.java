@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 @Component
-@ComponentScan
+@ComponentScan("com.payrolltask")
 public class PayrollApplication {
 
 	public static void main(String[] args) {

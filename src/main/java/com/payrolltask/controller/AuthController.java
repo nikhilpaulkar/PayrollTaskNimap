@@ -6,12 +6,14 @@ import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,7 +46,7 @@ import com.payrolltask.websecurity.JwtTokenUtil;
 
 
 
-
+@Validated
 @RestController
 @RequestMapping("/auth")
 public class AuthController 
@@ -80,7 +82,7 @@ public class AuthController
 	
     // Register API
 	@PostMapping("/register")
-	public ResponseEntity<?>createuser(@RequestBody UserDto userDto)throws Exception
+	public ResponseEntity<?>createuser(@Valid @RequestBody UserDto userDto)throws Exception
 	{
 		   
 		String email = userDto.getEmail();
@@ -90,9 +92,9 @@ public class AuthController
 		{
 			Users user = userRepository.findByEmailContainingIgnoreCase(email);
               System.out.println("jadskj");
-//			if (PasswordValidator.isValid(password))
-//			{
-//                 System.out.println("password");
+			if (PasswordValidator.isValid(password))
+			{
+                System.out.println("password");
 				
 				if (user == null)
 				{
@@ -106,13 +108,13 @@ public class AuthController
 							new ErrorResponseDto("User Email Id Already Exist", "please enter new email"),
 							HttpStatus.BAD_REQUEST);
 				}
-//			}
-//			else 
-//			{
-//
-//				return ResponseEntity.ok(new ErrorResponseDto(
-//						"Password should have Minimum 8 ","Password validation not done"));
-//			}
+			}
+			else 
+			{
+
+				return ResponseEntity.ok(new ErrorResponseDto(
+						"Password should have Minimum 8 charaters","Password validation not done"));
+			}
 
 		} 
 		else 
@@ -172,7 +174,7 @@ public class AuthController
 	   
 	 //forgot password API Send OTP
 	 @PostMapping("/forgotpassword")
-	 public ResponseEntity<?>forgotpassword(@RequestBody OtpDto otpDto, HttpServletRequest request)
+	 public ResponseEntity<?>forgotpassword(@Valid @RequestBody OtpDto otpDto, HttpServletRequest request)
 	 {
 		 try
 		 {

@@ -29,14 +29,14 @@ public class UserJobController
   @PostMapping
   public ResponseEntity<?> addUserJob(@RequestBody UserJobDto userJobDto,HttpServletRequest request)
   {
-//	  try
-//	  {
+	  try
+	  {
 		  userJobServiceInterface.adduserjob(userJobDto,request);
 		  return new ResponseEntity<>(new SucessResponseDto("successfullly applied ","success","successfully applied job"),HttpStatus.ACCEPTED);
-//		}catch(Exception e)
-//		{
-//		  return new ResponseEntity<>(new ErrorResponseDto( " Already apply ","already apply"),HttpStatus.BAD_REQUEST);
-//		}
+		}catch(Exception e)
+		{
+		  return new ResponseEntity<>(new ErrorResponseDto( " Already apply ","already apply"),HttpStatus.BAD_REQUEST);
+		}
 	}
   
   

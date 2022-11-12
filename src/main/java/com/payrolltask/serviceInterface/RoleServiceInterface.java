@@ -2,6 +2,8 @@ package com.payrolltask.serviceInterface;
 
 
 
+import java.util.ArrayList;
+
 import org.springframework.data.domain.Page;
 
 import com.payrolltask.dto.RoleDto;
@@ -19,6 +21,8 @@ public interface RoleServiceInterface
 	RoleDto updaterole(RoleDto roleDto, Long id);
 
 	void deleteRole(Long id);
+
+	ArrayList<String> getPermissionByUserId(Long id);
 	
 	
 }
