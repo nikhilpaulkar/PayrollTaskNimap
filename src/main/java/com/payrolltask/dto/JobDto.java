@@ -5,7 +5,7 @@ public class JobDto
 	private Long id;
 	private String jobtitle;
 	private String location;
-	private Long recruiter;
+	
 	public Long getId() {
 		return id;
 	}
@@ -26,19 +26,14 @@ public class JobDto
 	}
 	
 	
-	public Long getRecruiter() {
-		return recruiter;
-	}
-	public void setRecruiter(Long recruiter) {
-		this.recruiter = recruiter;
-	}
 	
-	public JobDto(Long id, String jobtitle, String location, Long recruiter) {
+	
+	public JobDto(Long id, String jobtitle, String location) {
 		super();
 		this.id = id;
 		this.jobtitle = jobtitle;
 		this.location = location;
-		this.recruiter = recruiter;
+		
 	}
 	public JobDto() {
 		super();

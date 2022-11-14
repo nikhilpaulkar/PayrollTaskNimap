@@ -14,7 +14,9 @@ import com.payrolltask.exception.ResourceNotFoundException;
 import com.payrolltask.repository.RolePemissionRespository;
 import com.payrolltask.repository.RoleRepository;
 import com.payrolltask.repository.UserRoleRepository;
+import com.payrolltask.serviceInterface.IPermissionIdListDto;
 import com.payrolltask.serviceInterface.IRoleListDto;
+import com.payrolltask.serviceInterface.RoleIdListDto;
 import com.payrolltask.serviceInterface.RoleServiceInterface;
 import com.payrolltask.utility.Pagination;
 
@@ -96,20 +98,20 @@ public class RoleServiceImpl implements RoleServiceInterface
 	@Override
 	public ArrayList<String> getPermissionByUserId(Long id)
 	{
-		ArrayList<RoleIdListDto> roleIds = userRoleRepository.findByPkUserId(userId, RoleIdListDto.class);
+		ArrayList<RoleIdListDto> roleIds = userRoleRepository.findByTaskUserId(id, RoleIdListDto.class);
 		ArrayList<Long> roles = new ArrayList<>();
 
 		for (int i = 0; i < roleIds.size(); i++)
 		{
 
-			roles.add(roleIds.get(i).getPkRoleId());
+			roles.add(roleIds.get(i).getTaskRoleId());
 
 		}
 
-		List<IPermissionIdList> rolesPermission = rolePermissionRepository.findPkPermissionByPkRoleIdIn(roles, IPermissionIdList.class);
+		List<IPermissionIdListDto> rolesPermission = rolePemissionRespository.findPkPermissionByPkRolesIdIn(roles, IPermissionIdListDto.class);
 		ArrayList<String> permissions = new ArrayList<>();
 
-		for (IPermissionIdList element : rolesPermission)
+		for (IPermissionIdListDto element : rolesPermission)
 		{
 
 			permissions.add(element.getPkPermissionActionName());

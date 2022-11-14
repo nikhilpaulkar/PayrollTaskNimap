@@ -1,9 +1,10 @@
 package com.payrolltask.serviceImpl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.payrolltask.entity.RoleEntity;
@@ -15,7 +16,10 @@ import com.payrolltask.payload.UserRoleRequest;
 import com.payrolltask.repository.RoleRepository;
 import com.payrolltask.repository.UserRepository;
 import com.payrolltask.repository.UserRoleRepository;
+import com.payrolltask.serviceInterface.IRoleListDto;
+import com.payrolltask.serviceInterface.IUserRoleListDto;
 import com.payrolltask.serviceInterface.UserRoleServiceInterface;
+import com.payrolltask.utility.Pagination;
 
 @Service
 public class UserRoleServiceImpl implements UserRoleServiceInterface
@@ -58,15 +62,7 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface
 		
 	}
 
-    // get all user id and role id 
-	@Override
-	public List<UserRoleEntity> getAll() 
-	{
-		List<UserRoleEntity> role= this.userRoleRepository.findAll();
-		return role;
-
-		
-	}
+    
  
 	// update role id and user id 
 	@Override
@@ -107,4 +103,26 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface
 		
 	}
 
+
+	@Override
+	public Page<IUserRoleListDto> getAll(String search, String pageNumber, String pageSize)
+	
+	{
+		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
+		  
+		if((search=="")||(search==null)||(search.length()==0))
+		{
+			return userRoleRepository.findByOrderByIdDesc(pagable,IUserRoleListDto.class);
+		}
+		else
+		{
+			return  userRoleRepository.findByOrderByIdDesc(search,pagable,IUserRoleListDto.class);
+		}
+		
+	}
+	
+
+
+
+	
 }

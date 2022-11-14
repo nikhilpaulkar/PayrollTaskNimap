@@ -17,4 +17,6 @@ public interface RoleRepository extends JpaRepository<RoleEntity, Long>
 
 	Page<IRoleListDto> findByRoleName(String search, Pageable pagable, Class<IRoleListDto> class1);
 
+	
+	
 }

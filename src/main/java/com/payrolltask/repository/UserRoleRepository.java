@@ -1,10 +1,13 @@
 package com.payrolltask.repository;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +15,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.payrolltask.entity.UserRoleEntity;
+import com.payrolltask.serviceInterface.IUserRoleListDto;
+import com.payrolltask.serviceInterface.RoleIdListDto;
 
 
 @Repository
@@ -38,6 +43,17 @@ public interface UserRoleRepository extends JpaRepository< UserRoleEntity, Long>
    	@Query(value="SELECT * from userrole t WHERE t.role_id=:role_id",nativeQuery = true)
 	List<UserRoleEntity> findByRoleId(@Param ("role_id")Long role_id);
 
+    
+	
+	ArrayList<RoleIdListDto> findByTaskUserId(Long id, Class<RoleIdListDto> class1);
+
+	///Page<IUserRoleListDto> findByOrderByIdDesc(Pageable pagable, Class<IUserRoleListDto> class1);
+
+	
+	
+	
+	
+	
 	
 
 }

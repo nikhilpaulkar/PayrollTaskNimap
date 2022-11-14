@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<Users, Long>
 
 	Page<IUserListDto> findByName(String search, Pageable pagable, Class<IUserListDto> class1);
 
+	
+	
 }

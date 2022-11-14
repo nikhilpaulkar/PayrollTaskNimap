@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.payrolltask.cacheconfig.CacheOperation;
 import com.payrolltask.dto.ModelDto;
 import com.payrolltask.entity.OtpEntity;
 import com.payrolltask.entity.Users;
@@ -27,6 +28,9 @@ public class AuthServiceImpl implements AuthInterface
   
   @Autowired
   private RoleServiceInterface roleServiceInterface;
+  
+  @Autowired
+  private CacheOperation cache;
 
   
   @Override

@@ -16,7 +16,6 @@ import com.payrolltask.entity.UserRoleEntity;
 import com.payrolltask.entity.Users;
 import com.payrolltask.exception.ResourceNotFoundException;
 import com.payrolltask.repository.JobRepository;
-import com.payrolltask.repository.RoleRepository;
 import com.payrolltask.repository.UserRepository;
 import com.payrolltask.repository.UserRoleRepository;
 import com.payrolltask.serviceInterface.IJobGetListDto;
@@ -42,14 +41,11 @@ public class JobServiceImpl implements JobServiceInterface
   @Autowired
   private UserRoleRepository userRoleRepository;
 
-  @Autowired
-  private RoleRepository roleRepository;
+ 
   @Override
   public void addjob(JobDto jobDto,HttpServletRequest request) 
   {
-	  RoleEntity role=roleRepository.findById(jobDto.getRecruiter()).orElseThrow(()->
-	  new ResourceNotFoundException("enter valid role id"));
-	  
+	
 	  
 	  final String header=request.getHeader("Authorization");
 	  String requestToken=header.substring(7);
@@ -60,13 +56,15 @@ public class JobServiceImpl implements JobServiceInterface
       Long id=user1.getId();
      
       UserRoleEntity userRoleEntity= userRoleRepository.findTaskRoleIdByTaskUserId(id);
-      String name=userRoleEntity.getTask().getRole().getRoleName();
-      System.out.println("Role name:"+name);
+      RoleEntity role=userRoleEntity.getTask().getRole();
+      
+      String roleName=userRoleEntity.getTask().getRole().getRoleName();
+      System.out.println("Role name:"+roleName);
       
       
-        if(name.equals("recruiter"))
+        if(roleName.equals("recruiter"))
         {
-	     System.out.println("sjkn");
+	    
 	     JobEntity jobEntity=new JobEntity();
 		 jobEntity.setJobtitle(jobDto.getJobtitle());
 		

@@ -87,12 +87,12 @@ public class AuthController
 		   
 		String email = userDto.getEmail();
 		String password = userDto.getPassword();
-		
+
 		if (PasswordValidator.isValidforEmail(email))
 		{
 			Users user = userRepository.findByEmailContainingIgnoreCase(email);
-              System.out.println("jadskj");
-			if (PasswordValidator.isValid(password))
+             
+		if (PasswordValidator.isValid(password))
 			{
                 System.out.println("password");
 				
@@ -112,8 +112,8 @@ public class AuthController
 			else 
 			{
 
-				return ResponseEntity.ok(new ErrorResponseDto(
-						"Password should have Minimum 8 charaters","Password validation not done"));
+				return new  ResponseEntity<>(new ErrorResponseDto(
+						"Password should have Minimum 8 charaters","Password validation not done"),HttpStatus.BAD_REQUEST);
 			}
 
 		} 
