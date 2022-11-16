@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthInterface
 		 throw new UsernameNotFoundException("user not found with"+email);
 	  }
 	  
-	 return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),new ArrayList<>());
+	 return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),getAuthority(user));
 
 
 	
@@ -75,33 +75,38 @@ public class AuthServiceImpl implements AuthInterface
  }
   
   
-  private ArrayList<SimpleGrantedAuthority> getAuthority(Users user) 
+  @SuppressWarnings("unchecked")
+private ArrayList<SimpleGrantedAuthority> getAuthority(Users user) 
   {
 
 		ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-		if (!cache.isKeyExist(user.getId() + "permission", user.getId() + "permission"))
-		{
+		//if (!cache.isKeyExist(user.getId() + "permission", user.getId() + "permission"))
+		//{
+		
 
 			ArrayList<SimpleGrantedAuthority> authorities1 = new ArrayList<>();
 			ArrayList<String> permissions = roleServiceInterface.getPermissionByUserId(user.getId());
 			permissions.forEach(permission ->
 			{
-
+                
 				authorities1.add(new SimpleGrantedAuthority("ROLE_" + permission));
-
+               
 			});
 			authorities = authorities1;
+			
 			cache.addInCache(user.getId() + "permission", user.getId() + "permission", authorities1);
-
-		} else {
-
+          
+		//} 
+       //else 
+	   //{
+             
 			authorities = (ArrayList<SimpleGrantedAuthority>) cache.getFromCache(user.getId() + "permission", user.getId() + "permission");
-
-		}
+           
+		//}
 
 		return authorities;
-
+               
 	}
 	
 	

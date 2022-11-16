@@ -2,9 +2,11 @@ package com.payrolltask.serviceInterface;
 
 public interface IUserRoleListDto 
 {
-	public Long getId();
-	public String getName();
-	public String getRoleName();
+	
+	public String getuserName();
+	public String getEmail();
+	public Long getroleId();
+	public String getrole_name();
 	
 
 }

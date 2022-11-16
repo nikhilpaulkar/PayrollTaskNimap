@@ -18,8 +18,10 @@ import com.payrolltask.exception.ResourceNotFoundException;
 import com.payrolltask.repository.JobRepository;
 import com.payrolltask.repository.UserRepository;
 import com.payrolltask.repository.UserRoleRepository;
+import com.payrolltask.serviceInterface.ICandidateListDto;
 import com.payrolltask.serviceInterface.IJobGetListDto;
 import com.payrolltask.serviceInterface.IJobListDto;
+import com.payrolltask.serviceInterface.IRecruiterDto;
 import com.payrolltask.serviceInterface.IRecruiterJobListDto;
 import com.payrolltask.serviceInterface.JobServiceInterface;
 import com.payrolltask.utility.Pagination;
@@ -207,6 +209,70 @@ public class JobServiceImpl implements JobServiceInterface
 	
 	
   }
+
+  @Override
+  public List<IRecruiterDto> getJobbyRecruiter(Long id,HttpServletRequest request)
+  {
+	  final String header=request.getHeader("Authorization");
+	  String requestToken=header.substring(7);
+
+	  final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
+	   
+	  Users user1=userRepository.findByEmail(email);
+      Long id1=user1.getId();
+      UserRoleEntity userRoleEntity= userRoleRepository.findTaskRoleIdByTaskUserId(id1);
+      String name=userRoleEntity.getTask().getRole().getRoleName();
+      
+      Long roleid= userRoleEntity.getTask().getRole().getId();
+      System.out.println("Role Id="+roleid);
+      System.out.println("Role name:"+name);
+      
+      if(name.equals("recruiter"))
+      {
+    		 List<IRecruiterDto> list= jobRepository.findgetJobbyRecruiter(id1,IRecruiterDto.class);
+             System.out.println("Recruiter job List="+list);
+    		 return list;
+             
+      }
+      else
+      {
+    	  throw new ResourceNotFoundException("only recruiter can get list !!");
+      }
+	
+  }
+  
+  
+      
+
+	@Override
+	public List<ICandidateListDto> getJobbycandidateid(Long id, HttpServletRequest request)
+	{
+		final String header=request.getHeader("Authorization");
+  	    String requestToken=header.substring(7);
+
+  	    final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
+  	   
+  	    Users user1=userRepository.findByEmail(email);
+        Long id1=user1.getId();
+        UserRoleEntity userRoleEntity= userRoleRepository.findTaskRoleIdByTaskUserId(id1);
+        String name=userRoleEntity.getTask().getRole().getRoleName();
+        
+        Long roleid= userRoleEntity.getTask().getRole().getId();
+        System.out.println("Role Id="+roleid);
+        System.out.println("Role name:"+name);
+        
+        if(name.equals("candidate"))
+        {
+      		 List<ICandidateListDto> list= jobRepository.findbycandidateid(id1,ICandidateListDto.class);
+               System.out.println("Recruiter job List="+list);
+      		 return list;
+               
+        }
+        else
+        {
+      	  throw new ResourceNotFoundException("only candidate can get list !!");
+        }
+	}
   
   
 }

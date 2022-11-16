@@ -21,4 +21,8 @@ public interface JobServiceInterface
 	void deletejob(Long id,HttpServletRequest request);
 	
 	List<IRecruiterJobListDto> getJobbyRecruiterId(HttpServletRequest request);
+
+	List<IRecruiterDto> getJobbyRecruiter(Long id, HttpServletRequest request);
+
+	List<ICandidateListDto> getJobbycandidateid(Long id, HttpServletRequest request);
 }

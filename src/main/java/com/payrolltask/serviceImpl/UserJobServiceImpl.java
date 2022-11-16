@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,18 +56,17 @@ public class UserJobServiceImpl implements UserJobServiceInterface
   @Override
   public void adduserjob(UserJobDto userJobDto,HttpServletRequest requesst)
   {
-	  Users user=userRepository.findById(userJobDto.getUserId()).orElseThrow(()-> 
-	  new ResourceNotFoundException("Not Found UserId"));
+	
 		
 	  final String header=requesst.getHeader("Authorization");
 	  String requestToken=header.substring(7);
-
+	  
 	  final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
 	   
 	  Users user1=userRepository.findByEmail(email);
 		
 		ArrayList<JobEntity> userJobs = new ArrayList<>();
-
+		
 		for(int i=0;i<userJobDto.getJobId().size();i++)
 		{
 			
@@ -76,12 +76,12 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 			new ResourceNotFoundException("Not Found Job Id"));
 			
 			
-			List<UserRoleEntity> userRole=userRoleRepository.findByUserId(user.getId());
+			List<UserRoleEntity> userRole=userRoleRepository.findByUserId(user1.getId());
 			
 			userJobs.add(job);
 			UserJobEntity userJob=new UserJobEntity();
 			userJob.setJobs(job);
-			userJob.setUser(user);
+			userJob.setUser(user1);
 			userJobRepository.save(userJob);
 			
 			
@@ -155,6 +155,8 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 		return null;
 	
  }
+
+  
 
 	
 

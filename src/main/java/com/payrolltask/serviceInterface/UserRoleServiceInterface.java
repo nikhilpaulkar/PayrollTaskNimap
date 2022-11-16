@@ -10,7 +10,7 @@ import com.payrolltask.payload.UserRoleRequest;
 public interface UserRoleServiceInterface
 {
 	void add(UserRoleRequest userRoleRequest);
-	Page<IUserRoleListDto> getAll(String search, String pageNumber, String pageSize);
+	Page<IUserRoleListDto> getAllUserRole(String search, String pageNumber, String pageSize);
 	void updateuserrole (UserRoleRequest userrolerequest);
 	UserRoleEntity deleteuserroles(UserRoleRequest userrolerequest);
 	

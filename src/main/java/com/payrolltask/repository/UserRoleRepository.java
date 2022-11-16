@@ -47,10 +47,12 @@ public interface UserRoleRepository extends JpaRepository< UserRoleEntity, Long>
 	
 	ArrayList<RoleIdListDto> findByTaskUserId(Long id, Class<RoleIdListDto> class1);
 
-	///Page<IUserRoleListDto> findByOrderByIdDesc(Pageable pagable, Class<IUserRoleListDto> class1);
+	@Transactional
+	@Query(value="select userentity.id as userId,userentity.name as userName,userentity.email,role.id as roleId,role.role_name from role "
+			+ " join userrole on userrole.role_id=role.id "
+			+ " join userentity on userrole.user_id=userentity.id",nativeQuery = true)
+	Page<IUserRoleListDto> findAll(Pageable pagable, Class<IUserRoleListDto> class1);
 
-	
-	
 	
 	
 	

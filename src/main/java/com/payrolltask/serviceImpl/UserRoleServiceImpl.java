@@ -16,7 +16,6 @@ import com.payrolltask.payload.UserRoleRequest;
 import com.payrolltask.repository.RoleRepository;
 import com.payrolltask.repository.UserRepository;
 import com.payrolltask.repository.UserRoleRepository;
-import com.payrolltask.serviceInterface.IRoleListDto;
 import com.payrolltask.serviceInterface.IUserRoleListDto;
 import com.payrolltask.serviceInterface.UserRoleServiceInterface;
 import com.payrolltask.utility.Pagination;
@@ -105,19 +104,17 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface
 
 
 	@Override
-	public Page<IUserRoleListDto> getAll(String search, String pageNumber, String pageSize)
+	public Page<IUserRoleListDto> getAllUserRole(String search, String pageNumber, String pageSize)
 	
 	{
 		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
 		  
 		if((search=="")||(search==null)||(search.length()==0))
 		{
-			return userRoleRepository.findByOrderByIdDesc(pagable,IUserRoleListDto.class);
+			return userRoleRepository.findAll(pagable,IUserRoleListDto.class);
 		}
-		else
-		{
-			return  userRoleRepository.findByOrderByIdDesc(search,pagable,IUserRoleListDto.class);
-		}
+		return null;
+		
 		
 	}
 	

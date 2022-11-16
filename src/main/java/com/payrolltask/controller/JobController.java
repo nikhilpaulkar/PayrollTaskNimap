@@ -22,8 +22,10 @@ import com.payrolltask.dto.ErrorResponseDto;
 import com.payrolltask.dto.JobDto;
 import com.payrolltask.dto.SucessResponseDto;
 import com.payrolltask.exception.ResourceNotFoundException;
+import com.payrolltask.serviceInterface.ICandidateListDto;
 import com.payrolltask.serviceInterface.IJobGetListDto;
 import com.payrolltask.serviceInterface.IJobListDto;
+import com.payrolltask.serviceInterface.IRecruiterDto;
 import com.payrolltask.serviceInterface.IRecruiterJobListDto;
 import com.payrolltask.serviceInterface.JobServiceInterface;
 
@@ -112,12 +114,43 @@ public class JobController
 	
     }
 	
+	// API for get Job list by Recruiter + Applied candidates 
 	@GetMapping("/getjobbyrecruiterid")
 	public ResponseEntity<?> getjobbyrecruiterid(HttpServletRequest request)
 	{
 		try 
 		{
 		List<IRecruiterJobListDto> job=	this.jobServiceInterface.getJobbyRecruiterId(request);
+			return new  ResponseEntity<>(new SucessResponseDto(" get job List","Success", job),HttpStatus.OK);
+		}catch(ResourceNotFoundException e) 
+		{
+
+			return new ResponseEntity<>( new ErrorResponseDto(e.getMessage(),"not found"),HttpStatus.NOT_FOUND);
+	    }
+	}
+	
+	// API for Get Job List By Recruiter id
+	@GetMapping("/getjobrecruiter/{id}")
+	public ResponseEntity<?> getjobbyrecruiter(Long id,HttpServletRequest request)
+	{
+		try 
+		{
+		List<IRecruiterDto> job=this.jobServiceInterface.getJobbyRecruiter(id,request);
+			return new  ResponseEntity<>(new SucessResponseDto(" get job List","Success", job),HttpStatus.OK);
+		}catch(ResourceNotFoundException e) 
+		{
+
+			return new ResponseEntity<>( new ErrorResponseDto(e.getMessage(),"not found"),HttpStatus.NOT_FOUND);
+	    }
+	}
+	
+	
+	@GetMapping("/getjobbycandidate/{id}")
+	public ResponseEntity<?> getjobbycandidateid(Long id,HttpServletRequest request)
+	{
+		try 
+		{
+		List<ICandidateListDto> job=this.jobServiceInterface.getJobbycandidateid(id,request);
 			return new  ResponseEntity<>(new SucessResponseDto(" get job List","Success", job),HttpStatus.OK);
 		}catch(ResourceNotFoundException e) 
 		{

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,16 +27,18 @@ public class UserJobController
   @Autowired
   private UserJobServiceInterface userJobServiceInterface;
   
+  @PreAuthorize("hasRole('applycandidate')")
   @PostMapping
   public ResponseEntity<?> addUserJob(@RequestBody UserJobDto userJobDto,HttpServletRequest request)
   {
 	  try
 	  {
 		  userJobServiceInterface.adduserjob(userJobDto,request);
+		  
 		  return new ResponseEntity<>(new SucessResponseDto("successfullly applied ","success","successfully applied job"),HttpStatus.ACCEPTED);
 		}catch(Exception e)
 		{
-		  return new ResponseEntity<>(new ErrorResponseDto( " Already apply ","already apply"),HttpStatus.BAD_REQUEST);
+		  return new ResponseEntity<>(new ErrorResponseDto( " Job Id not found ","not found"),HttpStatus.BAD_REQUEST);
 		}
 	}
   
@@ -58,5 +61,6 @@ public class UserJobController
 	    }
 	}
 	
+  
 }
 

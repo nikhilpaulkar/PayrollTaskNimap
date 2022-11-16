@@ -1,5 +1,7 @@
 package com.payrolltask.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -113,6 +115,30 @@ public class RoleController
 	    }
 	}
 	
-
+//	@GetMapping()
+//	public ResponseEntity<?> getAllCandidate(
+//			@RequestParam(defaultValue = "") String search,
+//			@RequestParam(defaultValue = "1") String pageNumber,
+//			@RequestParam(defaultValue = "5") String pageSize)
+//	{
+//		
+//		Page<ICandidateListDto> entity= roleServiceInterface.getCandidateList(search,pageNumber,pageSize);
+//		if(entity.getTotalElements()!=0)
+//		{
+//			return new ResponseEntity<>(new SucessResponseDto("get Candidate List","success",entity.getContent()), HttpStatus.OK);
+//		}
+//		else
+//		{
+//		return new ResponseEntity<>(new ErrorResponseDto("Not found","fail"),HttpStatus.BAD_REQUEST);
+//	    }
+	//}
+	
+	
+	@GetMapping("/permissions/user/{id}")
+	public ResponseEntity<?> getPermissionById(@PathVariable Long id)
+	{
+		ArrayList<String>job= this.roleServiceInterface.getPermissionByUserId(id);
+		return new ResponseEntity<>(job,HttpStatus.OK);
+	}
 
 }

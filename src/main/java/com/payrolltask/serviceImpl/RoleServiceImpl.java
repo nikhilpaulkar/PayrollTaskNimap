@@ -14,6 +14,7 @@ import com.payrolltask.exception.ResourceNotFoundException;
 import com.payrolltask.repository.RolePemissionRespository;
 import com.payrolltask.repository.RoleRepository;
 import com.payrolltask.repository.UserRoleRepository;
+import com.payrolltask.serviceInterface.ICandidateListDto;
 import com.payrolltask.serviceInterface.IPermissionIdListDto;
 import com.payrolltask.serviceInterface.IRoleListDto;
 import com.payrolltask.serviceInterface.RoleIdListDto;
@@ -119,6 +120,25 @@ public class RoleServiceImpl implements RoleServiceInterface
 		}
 
 		return permissions;
+		
+	}
+
+	@Override
+	public Page<ICandidateListDto> getCandidateList(String search, String pageNumber, String pageSize) 
+	{
+         Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
+		
+		if((search=="")||(search==null)||(search.length()==0))
+		{
+			//return roleRepository.findByOrderByUserId(pagable,ICandidateListDto.class);
+		}
+		else
+		{
+			
+			//Page<ICandidateListDto> list= roleRepository.findByUserByCandidate(search,pagable,ICandidateListDto.class);
+			//return list;
+		}
+		return null;
 		
 	}
 

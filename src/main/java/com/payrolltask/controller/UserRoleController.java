@@ -50,7 +50,7 @@ public class UserRoleController
 			@RequestParam(defaultValue = "5") String pageSize)
 	{
 		
-		Page<IUserRoleListDto> entity= userRoleServiceInterface.getAll(search,pageNumber,pageSize);
+		Page<IUserRoleListDto> entity= userRoleServiceInterface.getAllUserRole(search,pageNumber,pageSize);
 		if(entity.getTotalElements()!=0)
 		{
 			return new ResponseEntity<>(new SucessResponseDto("get user", "success", entity.getContent()), HttpStatus.OK);
