@@ -54,11 +54,9 @@ public class UserJobServiceImpl implements UserJobServiceInterface
   private JwtTokenUtil jwtTokenUtil;
   
   @Override
-  public void adduserjob(UserJobDto userJobDto,HttpServletRequest requesst)
+  public void adduserjob(UserJobDto userJobDto,Long id,HttpServletRequest request)
   {
-	
-		
-	  final String header=requesst.getHeader("Authorization");
+	  final String header=request.getHeader("Authorization");
 	  String requestToken=header.substring(7);
 	  
 	  final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
@@ -110,7 +108,7 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 			JobEntity job1=jobRepository.findById(JobId).orElseThrow(()->
 			new ResourceNotFoundException("Not Found Job Id"));
 			
-			RoleEntity recruiterId= job1.getRecruiter();
+			Users recruiterId= job1.getRecruiter();
 		
 			
 			Long recId=recruiterId.getId();
@@ -139,10 +137,8 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 
 					}
 			}
-
-		
-		}
- }
+       }
+  }
 
   @Override
   public Page<IUserJobListDto> getAllcandidate(String search, String pageNumber, String pageSize)

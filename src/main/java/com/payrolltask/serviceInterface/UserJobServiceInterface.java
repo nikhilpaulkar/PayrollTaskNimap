@@ -9,8 +9,8 @@ import com.payrolltask.dto.UserJobDto;
 public interface UserJobServiceInterface
 {
 
-	void adduserjob(UserJobDto userJobDto,HttpServletRequest request);
+	void adduserjob(UserJobDto userJobDto,Long id,HttpServletRequest request);
 	Page<IUserJobListDto> getAllcandidate(String search, String pageNumber, String pageSize);
-    
+	
 	
 }

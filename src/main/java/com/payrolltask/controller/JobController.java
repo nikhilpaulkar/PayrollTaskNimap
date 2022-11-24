@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,8 +37,9 @@ public class JobController
   @Autowired
   private JobServiceInterface jobServiceInterface;
   
+  @PreAuthorize("hasRole('applyrecruiter')")
   @PostMapping()
-	public ResponseEntity<?>applyjob(@RequestBody JobDto jobDto,HttpServletRequest request)
+  public ResponseEntity<?>applyjob(@RequestBody JobDto jobDto,HttpServletRequest request)
 	{
 	  try
 		{
@@ -121,7 +123,7 @@ public class JobController
 		try 
 		{
 		List<IRecruiterJobListDto> job=	this.jobServiceInterface.getJobbyRecruiterId(request);
-			return new  ResponseEntity<>(new SucessResponseDto(" get job List","Success", job),HttpStatus.OK);
+			return new  ResponseEntity<>(new SucessResponseDto(" get job ","Success", job),HttpStatus.OK);
 		}catch(ResourceNotFoundException e) 
 		{
 
@@ -144,14 +146,14 @@ public class JobController
 	    }
 	}
 	
-	
+	// API for Get Job List on candidate id 
 	@GetMapping("/getjobbycandidate/{id}")
 	public ResponseEntity<?> getjobbycandidateid(Long id,HttpServletRequest request)
 	{
 		try 
 		{
 		List<ICandidateListDto> job=this.jobServiceInterface.getJobbycandidateid(id,request);
-			return new  ResponseEntity<>(new SucessResponseDto(" get job List","Success", job),HttpStatus.OK);
+			return new  ResponseEntity<>(new SucessResponseDto("  job List","Success", job),HttpStatus.OK);
 		}catch(ResourceNotFoundException e) 
 		{
 

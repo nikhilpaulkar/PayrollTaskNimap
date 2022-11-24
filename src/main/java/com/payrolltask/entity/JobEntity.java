@@ -38,7 +38,7 @@ public class JobEntity
     private Date createdat;
 	private boolean isactive=true;
 	@OneToOne
-	private RoleEntity recruiter;
+	private Users recruiter;
 	
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "jobs")
@@ -86,14 +86,7 @@ public class JobEntity
 	}
 
 	
-	public RoleEntity getRecruiter() {
-		return recruiter;
-	}
-
-	public void setRecruiter(RoleEntity recruiter) {
-		this.recruiter = recruiter;
-	}
-
+	
 	
 
 	public Date getUpdatedat() {
@@ -114,8 +107,17 @@ public class JobEntity
 
 	
 
+	
+	public Users getRecruiter() {
+		return recruiter;
+	}
+
+	public void setRecruiter(Users recruiter) {
+		this.recruiter = recruiter;
+	}
+
 	public JobEntity(Long id, String jobtitle, String location, Date updatedat, Date createdat, boolean isactive,
-			RoleEntity recruiter, List<UserJobEntity> userJobEntity) {
+			Users recruiter, List<UserJobEntity> userJobEntity) {
 		super();
 		this.id = id;
 		this.jobtitle = jobtitle;

@@ -29,11 +29,11 @@ public class UserJobController
   
   @PreAuthorize("hasRole('applycandidate')")
   @PostMapping
-  public ResponseEntity<?> addUserJob(@RequestBody UserJobDto userJobDto,HttpServletRequest request)
+  public ResponseEntity<?> addUserJob(@RequestBody UserJobDto userJobDto, Long id,HttpServletRequest request)
   {
 	  try
 	  {
-		  userJobServiceInterface.adduserjob(userJobDto,request);
+		  userJobServiceInterface.adduserjob(userJobDto,id,request);
 		  
 		  return new ResponseEntity<>(new SucessResponseDto("successfullly applied ","success","successfully applied job"),HttpStatus.ACCEPTED);
 		}catch(Exception e)

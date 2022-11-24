@@ -1,6 +1,7 @@
 package com.payrolltask.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,10 +56,10 @@ public class JobServiceImpl implements JobServiceInterface
 	  final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
 	   
 	  Users user1=userRepository.findByEmail(email);
+	  System.out.println("UserID"+user1);
       Long id=user1.getId();
-     
       UserRoleEntity userRoleEntity= userRoleRepository.findTaskRoleIdByTaskUserId(id);
-      RoleEntity role=userRoleEntity.getTask().getRole();
+     
       
       String roleName=userRoleEntity.getTask().getRole().getRoleName();
       System.out.println("Role name:"+roleName);
@@ -71,8 +72,10 @@ public class JobServiceImpl implements JobServiceInterface
 		 jobEntity.setJobtitle(jobDto.getJobtitle());
 		
 		 jobEntity.setLocation(jobDto.getLocation());
+		
+		  jobEntity.setRecruiter(user1);
+		 System.out.println("REcruiter"+user1);
 		 
-		  jobEntity.setRecruiter(role);
          jobRepository.save(jobEntity);
        }
       else
@@ -219,6 +222,7 @@ public class JobServiceImpl implements JobServiceInterface
 	  final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
 	   
 	  Users user1=userRepository.findByEmail(email);
+	  System.out.println("use="+user1);
       Long id1=user1.getId();
       UserRoleEntity userRoleEntity= userRoleRepository.findTaskRoleIdByTaskUserId(id1);
       String name=userRoleEntity.getTask().getRole().getRoleName();
