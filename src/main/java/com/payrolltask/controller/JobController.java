@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,11 +25,10 @@ import com.payrolltask.dto.JobDto;
 import com.payrolltask.dto.SucessResponseDto;
 import com.payrolltask.exception.ResourceNotFoundException;
 import com.payrolltask.serviceInterface.ICandidateListDto;
-import com.payrolltask.serviceInterface.IJobGetListDto;
 import com.payrolltask.serviceInterface.IJobListDto;
 import com.payrolltask.serviceInterface.IRecruiterDto;
-import com.payrolltask.serviceInterface.IRecruiterJobListDto;
 import com.payrolltask.serviceInterface.JobServiceInterface;
+import com.payrolltask.utility.GlobalFunction;
 
 @RequestMapping("/job")
 @RestController
@@ -39,11 +39,11 @@ public class JobController
   
   @PreAuthorize("hasRole('applyrecruiter')")
   @PostMapping()
-  public ResponseEntity<?>applyjob(@RequestBody JobDto jobDto,HttpServletRequest request)
+  public ResponseEntity<?>applyjob(@RequestBody JobDto jobDto,@RequestAttribute(GlobalFunction.USER_ID) Long id)
 	{
 	  try
 		{
-		jobServiceInterface.addjob(jobDto,request);
+		jobServiceInterface.addjob(jobDto,id);
 		return new ResponseEntity<>(new SucessResponseDto("add job","successfully", "success"),HttpStatus.CREATED);
 	   }catch (Exception e)
 	  {
@@ -76,7 +76,7 @@ public class JobController
 	{
 		try 
 		{
-          List<IJobGetListDto> jobDto=this.jobServiceInterface.getjobById(id);
+          List<IJobListDto> jobDto=this.jobServiceInterface.getjobById(id);
           return new ResponseEntity<>(new SucessResponseDto("Success","Success",jobDto),HttpStatus.OK);
 		}catch(ResourceNotFoundException e) 
 		{
@@ -84,13 +84,15 @@ public class JobController
 		}
 	}
 	
+	
+	@PreAuthorize("hasRole('admingetlist')")
 	@PutMapping("/{id}")
-	public ResponseEntity<?>updateByJobId(@RequestBody JobDto jobDto,@PathVariable Long id,HttpServletRequest request)
+	public ResponseEntity<?>updateByJobId(@RequestBody JobDto jobDto,@PathVariable Long id)
 	{
 		try
 		{
 			
-		  this.jobServiceInterface.updatejob(jobDto, id,request);
+		  this.jobServiceInterface.updatejob(jobDto, id);
 		  return new ResponseEntity<>(new SucessResponseDto("update", "update sucessfully", "updated"),HttpStatus.OK);
 	
 		}catch(Exception e)
@@ -100,13 +102,15 @@ public class JobController
 			
 	}
 	
+	
+	@PreAuthorize("hasRole('admingetlist')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletejob(@PathVariable Long id,HttpServletRequest request)
+	public ResponseEntity<?> deletejob(@PathVariable Long id)
 	{
 
 		try 
 		{
-			this.jobServiceInterface.deletejob(id,request);
+			this.jobServiceInterface.deletejob(id);
 			return new  ResponseEntity<>(new SucessResponseDto("Success","Success", "Deleted Successfully!"),HttpStatus.OK);
 		}catch(ResourceNotFoundException e) 
 		{
@@ -116,22 +120,10 @@ public class JobController
 	
     }
 	
-	// API for get Job list by Recruiter + Applied candidates 
-	@GetMapping("/getjobbyrecruiterid")
-	public ResponseEntity<?> getjobbyrecruiterid(HttpServletRequest request)
-	{
-		try 
-		{
-		List<IRecruiterJobListDto> job=	this.jobServiceInterface.getJobbyRecruiterId(request);
-			return new  ResponseEntity<>(new SucessResponseDto(" get job ","Success", job),HttpStatus.OK);
-		}catch(ResourceNotFoundException e) 
-		{
-
-			return new ResponseEntity<>( new ErrorResponseDto(e.getMessage(),"not found"),HttpStatus.NOT_FOUND);
-	    }
-	}
+	
 	
 	// API for Get Job List By Recruiter id
+	@PreAuthorize("hasRole('applyrecruiter')")
 	@GetMapping("/getjobrecruiter/{id}")
 	public ResponseEntity<?> getjobbyrecruiter(Long id,HttpServletRequest request)
 	{
@@ -146,7 +138,8 @@ public class JobController
 	    }
 	}
 	
-	// API for Get Job List on candidate id 
+	// API for Get Job List on candidate id
+	@PreAuthorize("hasRole('applycandidate')")
 	@GetMapping("/getjobbycandidate/{id}")
 	public ResponseEntity<?> getjobbycandidateid(Long id,HttpServletRequest request)
 	{

@@ -7,6 +7,5 @@ public interface IJobListDto
 	public Long getId();
 	public String getJobtitle();
 	public String getLocation();
-	public IRoleListDto getRecruiter();
-	
+		
 }

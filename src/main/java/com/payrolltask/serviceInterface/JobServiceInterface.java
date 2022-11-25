@@ -10,20 +10,20 @@ import com.payrolltask.dto.JobDto;
 
 public interface JobServiceInterface 
 {
-	void addjob(JobDto jobDto,HttpServletRequest request);
+	void addjob(JobDto jobDto,Long id);
 
 	Page<IJobListDto> getAllJob(String search, String pageNumber, String pageSize);
 
-	List<IJobGetListDto> getjobById(Long id);
+	List<IJobListDto> getjobById(Long id);
 
-	JobDto updatejob(JobDto jobDto, Long id,HttpServletRequest request);
+	JobDto updatejob(JobDto jobDto, Long id);
 
-	void deletejob(Long id,HttpServletRequest request);
+	void deletejob(Long id);
 	
-	List<IRecruiterJobListDto> getJobbyRecruiterId(HttpServletRequest request);
-
-	List<IRecruiterDto> getJobbyRecruiter(Long id, HttpServletRequest request);
+	
+	List<IRecruiterDto> getJobbyRecruiter(Long id,HttpServletRequest request);
 
 	List<ICandidateListDto> getJobbycandidateid(Long id, HttpServletRequest request);
 
+	
 }

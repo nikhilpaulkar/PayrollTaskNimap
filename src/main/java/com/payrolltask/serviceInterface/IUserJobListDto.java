@@ -4,6 +4,10 @@ package com.payrolltask.serviceInterface;
 
 public interface IUserJobListDto
 {
-	public IJobListDto getJobs();
-	public IUserListDto getUser();
+	public Long getuserid();
+	public Long getjobid();
+	public String getName();
+	public String getEmail();
+	public String getJobtitle();
+	public String getLocation();
 }
