@@ -24,7 +24,6 @@ import com.payrolltask.dto.ErrorResponseDto;
 import com.payrolltask.dto.JobDto;
 import com.payrolltask.dto.SucessResponseDto;
 import com.payrolltask.exception.ResourceNotFoundException;
-import com.payrolltask.serviceInterface.ICandidateListDto;
 import com.payrolltask.serviceInterface.IJobListDto;
 import com.payrolltask.serviceInterface.IRecruiterDto;
 import com.payrolltask.serviceInterface.JobServiceInterface;
@@ -138,19 +137,6 @@ public class JobController
 	    }
 	}
 	
-	// API for Get Job List on candidate id
-	@PreAuthorize("hasRole('applycandidate')")
-	@GetMapping("/getjobbycandidate/{id}")
-	public ResponseEntity<?> getjobbycandidateid(Long id,HttpServletRequest request)
-	{
-		try 
-		{
-		List<ICandidateListDto> job=this.jobServiceInterface.getJobbycandidateid(id,request);
-			return new  ResponseEntity<>(new SucessResponseDto("  job List","Success", job),HttpStatus.OK);
-		}catch(ResourceNotFoundException e) 
-		{
-
-			return new ResponseEntity<>( new ErrorResponseDto(e.getMessage(),"not found"),HttpStatus.NOT_FOUND);
-	    }
-	}
+	
+	
 }

@@ -42,12 +42,12 @@ public class UserJobController
 		}
 	}
   
-  
+    @PreAuthorize("hasRole('admingetlist')")
     @GetMapping()
 	public ResponseEntity<?> getAllusers(
-			@RequestParam(defaultValue = "1") String search,
-			@RequestParam(defaultValue = "5") String pageNumber,
-			@RequestParam(defaultValue = "") String pageSize,
+			@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "1") String pageNumber,
+			@RequestParam(defaultValue = "5") String pageSize,
 			@RequestParam(defaultValue = "") String userid,
 			@RequestParam(defaultValue = "") String jobid)
 	{

@@ -24,5 +24,4 @@ public interface RoleServiceInterface
 
 	ArrayList<String> getPermissionByUserId(Long id);
 	
-	Page<ICandidateListDto> getCandidateList(String search, String pageNumber, String pageSize);
 }

@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.payrolltask.dto.ErrorResponseDto;
 import com.payrolltask.dto.SucessResponseDto;
 import com.payrolltask.payload.UserRoleRequest;
+import com.payrolltask.serviceInterface.IUserJobListDto;
 import com.payrolltask.serviceInterface.IUserRoleListDto;
+import com.payrolltask.serviceInterface.UserRoleDto;
 import com.payrolltask.serviceInterface.UserRoleServiceInterface;
 
 @RestController
@@ -89,4 +91,26 @@ public class UserRoleController
 				}
 			}
 
+	 
+	 
+	 
+	   @GetMapping("/get")
+		public ResponseEntity<?> getAllusers(
+				@RequestParam(defaultValue = "") String search,
+				@RequestParam(defaultValue = "1") String pageNumber,
+				@RequestParam(defaultValue = "5") String pageSize,
+				@RequestParam(defaultValue = "") String user_id,
+				@RequestParam(defaultValue = "") String role_id)
+		{
+			
+			Page<UserRoleDto> entity= userRoleServiceInterface.findAllRoleList(search,pageNumber,pageSize,user_id,role_id);
+			if(entity.getTotalElements()!=0)
+			{
+				return new ResponseEntity<>(new SucessResponseDto("User-JOB List","Success", entity.getContent()),HttpStatus.ACCEPTED);
+			}
+			else
+			{
+			   return new ResponseEntity<>(new ErrorResponseDto("not found","not found"),HttpStatus.NOT_FOUND);
+		    }
+		}
 }

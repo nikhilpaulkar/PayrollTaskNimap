@@ -17,6 +17,7 @@ import com.payrolltask.repository.RoleRepository;
 import com.payrolltask.repository.UserRepository;
 import com.payrolltask.repository.UserRoleRepository;
 import com.payrolltask.serviceInterface.IUserRoleListDto;
+import com.payrolltask.serviceInterface.UserRoleDto;
 import com.payrolltask.serviceInterface.UserRoleServiceInterface;
 import com.payrolltask.utility.Pagination;
 
@@ -117,6 +118,19 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface
 		
 		
 	}
+
+
+
+	@Override
+	public Page<UserRoleDto> findAllRoleList(String search, String pageNumber, String pageSize,String user_id,String role_id)
+	
+	{
+		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
+
+		return userRoleRepository.findAllRoleList(user_id,role_id,pagable,UserRoleDto.class);
+		
+	}
+	
 	
 
 

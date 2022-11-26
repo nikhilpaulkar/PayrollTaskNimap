@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.payrolltask.entity.UserRoleEntity;
 import com.payrolltask.serviceInterface.IUserRoleListDto;
 import com.payrolltask.serviceInterface.RoleIdListDto;
+import com.payrolltask.serviceInterface.UserRoleDto;
 
 
 @Repository
@@ -55,6 +56,11 @@ public interface UserRoleRepository extends JpaRepository< UserRoleEntity, Long>
 
 	
 	
+	@Query(value="select userentity.name,userentity.email,userrole.user_id,userrole.role_id ,role.role_name as rolename from userentity\r\n"
+			+ "inner join userrole on userrole.user_id=userentity.id INNER join role on userrole.role_id=role.id\r\n"
+			+ "AND(:user_id= '' OR userrole.user_id IN (select unnest(cast(string_to_array(:user_id, ',') as bigint[]))))\r\n"
+			+ "AND(:role_id= '' OR userrole.role_id IN (select unnest(cast(string_to_array(:role_id, ',') as bigint[]))))",nativeQuery=true)
+	Page<UserRoleDto> findAllRoleList(String user_id, String role_id, Pageable pagable, Class<UserRoleDto> class1);
 	
 	
 

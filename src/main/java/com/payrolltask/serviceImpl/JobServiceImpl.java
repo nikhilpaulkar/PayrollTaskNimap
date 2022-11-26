@@ -17,7 +17,6 @@ import com.payrolltask.exception.ResourceNotFoundException;
 import com.payrolltask.repository.JobRepository;
 import com.payrolltask.repository.UserRepository;
 import com.payrolltask.repository.UserRoleRepository;
-import com.payrolltask.serviceInterface.ICandidateListDto;
 import com.payrolltask.serviceInterface.IJobListDto;
 import com.payrolltask.serviceInterface.IRecruiterDto;
 import com.payrolltask.serviceInterface.JobServiceInterface;
@@ -127,13 +126,13 @@ public class JobServiceImpl implements JobServiceInterface
 	  final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
 	   
 	  Users user=userRepository.findByEmail(email);
-	  System.out.println("use="+user);
+	  
       Long id1=user.getId();
       UserRoleEntity userRoleEntity= userRoleRepository.findTaskRoleIdByTaskUserId(id1);
       
       
 	 List<IRecruiterDto> list= jobRepository.findgetJobbyRecruiter(id1,IRecruiterDto.class);
-     System.out.println("Recruiter job List="+list);
+    
      return list;
              
       
@@ -143,21 +142,7 @@ public class JobServiceImpl implements JobServiceInterface
   
       
 
-	@Override
-	public List<ICandidateListDto> getJobbycandidateid(Long id, HttpServletRequest request)
-	{
-		final String header=request.getHeader("Authorization");
-  	    String requestToken=header.substring(7);
-
-  	    final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
-  	   
-  	    Users user1=userRepository.findByEmail(email);
-        Long id1=user1.getId();
-        UserRoleEntity userRoleEntity= userRoleRepository.findTaskRoleIdByTaskUserId(id1);
-        
-       List<ICandidateListDto> list= jobRepository.findbycandidateid(id1,ICandidateListDto.class);
-       return list;
-  }
+	
 }
 
 

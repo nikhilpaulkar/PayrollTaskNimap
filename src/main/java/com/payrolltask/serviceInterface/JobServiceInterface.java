@@ -23,7 +23,6 @@ public interface JobServiceInterface
 	
 	List<IRecruiterDto> getJobbyRecruiter(Long id,HttpServletRequest request);
 
-	List<ICandidateListDto> getJobbycandidateid(Long id, HttpServletRequest request);
 
 	
 }

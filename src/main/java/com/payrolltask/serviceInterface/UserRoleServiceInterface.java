@@ -14,5 +14,5 @@ public interface UserRoleServiceInterface
 	void updateuserrole (UserRoleRequest userrolerequest);
 	UserRoleEntity deleteuserroles(UserRoleRequest userrolerequest);
 	
-	
+	Page<UserRoleDto>findAllRoleList(String search,String pageNumber,String pageSize,String user_id,String role_id);
 }

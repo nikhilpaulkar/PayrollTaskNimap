@@ -12,7 +12,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.payrolltask.entity.JobEntity;
-import com.payrolltask.serviceInterface.ICandidateListDto;
 import com.payrolltask.serviceInterface.IJobListDto;
 import com.payrolltask.serviceInterface.IRecruiterDto;
 @Repository
@@ -39,8 +38,5 @@ public interface JobRepository extends JpaRepository<JobEntity,Long>
 
 	
 	
-	@Query(value="select userentity.id as userid,userentity.name,jobentity.id as jobid , jobentity.jobtitle,jobentity.location,userrole.role_id from  userentity INNER join userjob ON userjob.user_id = userentity.id INNER join jobentity ON jobentity.id = userjob.jobs_id INNER join userrole on userrole.user_id=userentity.id INNER join role on userrole.role_id=role.id",nativeQuery = true)
-	List<ICandidateListDto> findbycandidateid(@Param("id") Long id, Class<ICandidateListDto> class1);
-
-
+	
 }
