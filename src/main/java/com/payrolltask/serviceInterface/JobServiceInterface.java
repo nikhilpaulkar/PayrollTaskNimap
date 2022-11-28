@@ -2,7 +2,6 @@ package com.payrolltask.serviceInterface;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 
@@ -21,8 +20,8 @@ public interface JobServiceInterface
 	void deletejob(Long id);
 	
 	
-	List<IRecruiterDto> getJobbyRecruiter(Long id,HttpServletRequest request);
+	List<IRecruiterDto> getJobbyRecruiter(Long id);
 
-
+    List <IListRecruiterDto> getRecruiterJobsById(Long recruiter_id);
 	
 }

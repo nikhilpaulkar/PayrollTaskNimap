@@ -2,8 +2,6 @@ package com.payrolltask.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -25,11 +23,13 @@ import com.payrolltask.dto.JobDto;
 import com.payrolltask.dto.SucessResponseDto;
 import com.payrolltask.exception.ResourceNotFoundException;
 import com.payrolltask.serviceInterface.IJobListDto;
+import com.payrolltask.serviceInterface.IListRecruiterDto;
 import com.payrolltask.serviceInterface.IRecruiterDto;
 import com.payrolltask.serviceInterface.JobServiceInterface;
+import com.payrolltask.utility.ApiUrls;
 import com.payrolltask.utility.GlobalFunction;
 
-@RequestMapping("/job")
+@RequestMapping(ApiUrls.JOB)
 @RestController
 public class JobController
 {
@@ -50,8 +50,9 @@ public class JobController
 
 	  }
 	}
-	
-	@GetMapping()
+  
+    @PreAuthorize("hasRole('admingetlist')")
+	@GetMapping(ApiUrls.GET_ALL)
 	public ResponseEntity<?> getAlljob(
 			@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber,
@@ -69,7 +70,7 @@ public class JobController
 	    }
 	 }
 
-	
+    @PreAuthorize("hasRole('admingetlist')")
 	@GetMapping("/{id}")
 	public ResponseEntity<?>getjobid(@PathVariable Long id)
 	{
@@ -124,11 +125,11 @@ public class JobController
 	// API for Get Job List By Recruiter id
 	@PreAuthorize("hasRole('applyrecruiter')")
 	@GetMapping("/getjobrecruiter/{id}")
-	public ResponseEntity<?> getjobbyrecruiter(Long id,HttpServletRequest request)
+	public ResponseEntity<?> getjobbyrecruiter(@RequestAttribute(GlobalFunction.USER_ID) Long id)
 	{
 		try 
 		{
-		List<IRecruiterDto> job=this.jobServiceInterface.getJobbyRecruiter(id,request);
+		  List<IRecruiterDto> job=this.jobServiceInterface.getJobbyRecruiter(id);
 			return new  ResponseEntity<>(new SucessResponseDto(" get job List","Success", job),HttpStatus.OK);
 		}catch(ResourceNotFoundException e) 
 		{
@@ -137,6 +138,21 @@ public class JobController
 	    }
 	}
 	
+	@PreAuthorize("hasRole('applyrecruiter')")
+	@GetMapping("/recruiter")
+	public ResponseEntity<?> getjobbyrecruite(@RequestAttribute(GlobalFunction.USER_ID) Long recruiter_id)
+	{
+		try 
+		{
+			
+		  List<IListRecruiterDto> job=this.jobServiceInterface.getRecruiterJobsById(recruiter_id);
+			return new  ResponseEntity<>(new SucessResponseDto(" get job List","Success", job),HttpStatus.OK);
+		}catch(ResourceNotFoundException e) 
+		{
+
+			return new ResponseEntity<>( new ErrorResponseDto(e.getMessage(),"not found"),HttpStatus.NOT_FOUND);
+	    }
+	}
 	
 	
 }

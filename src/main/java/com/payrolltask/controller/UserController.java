@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class UserController
   private UserServiceInterface  userServiceInterface;
   
     //get all users With Pagination
+    @PreAuthorize("hasRole('admingetlist')")
 	@GetMapping()
 	public ResponseEntity<?> getAllusers(
 			@RequestParam(defaultValue = "") String search,
@@ -47,6 +49,7 @@ public class UserController
 	}
   
 	// get user by id
+    @PreAuthorize("hasRole('admingetlist')")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getUserById( @PathVariable Long id)
 	{
@@ -63,6 +66,7 @@ public class UserController
 	
 	
 	//update User by id
+    @PreAuthorize("hasRole('admingetlist')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateDataByUserId(@RequestBody UserDto userDto,@PathVariable Long id)
 	{
@@ -78,7 +82,8 @@ public class UserController
 				
 		}
 
-	// delete by id 
+	// delete by id
+    @PreAuthorize("hasRole('admingetlist')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable Long id)
 	{

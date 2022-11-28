@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class RoleController
 	private RoleServiceInterface roleServiceInterface;
 	
 	// add role 
+	@PreAuthorize("hasRole('admingetlist')")
 	@PostMapping()
 	public ResponseEntity<?>addrole(@RequestBody RoleDto roleDto)
 	{
@@ -50,6 +52,7 @@ public class RoleController
 	
 	
 	// get all roles with pagination
+	@PreAuthorize("hasRole('admingetlist')")
 	@GetMapping()
 	public ResponseEntity<?> getAllusers(
 			@RequestParam(defaultValue = "") String search,
@@ -69,6 +72,7 @@ public class RoleController
 	}
 	
 	// get by id 
+	@PreAuthorize("hasRole('admingetlist')")
 	@GetMapping("/{id}")
 	public ResponseEntity<?>getRoleid(@PathVariable Long id)
 	{
@@ -83,6 +87,7 @@ public class RoleController
 	   }
 	
 	// update by role id 
+	@PreAuthorize("hasRole('admingetlist')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?>updateByRoleId(@RequestBody RoleDto roleDto,@PathVariable Long id)
 	{
@@ -100,6 +105,7 @@ public class RoleController
 	}
 	
 	// delete by role id 
+	@PreAuthorize("hasRole('admingetlist')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleterole(@PathVariable Long id)
 	{
@@ -133,7 +139,7 @@ public class RoleController
 //	    }
 	//}
 	
-	
+	@PreAuthorize("hasRole('admingetlist')")
 	@GetMapping("/permissions/user/{id}")
 	public ResponseEntity<?> getPermissionById(@PathVariable Long id)
 	{

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ public class RolePermissionController
 	private RolePermissionServiceInterface rolePermissionServiceInterface;
 	
 	// add permission id and role id
+	@PreAuthorize("hasRole('admingetlist')")
 	@PostMapping
 	private ResponseEntity<?> add(@RequestBody RolePermissionRequest rolePermissionRequest)
 	{
@@ -43,6 +45,7 @@ public class RolePermissionController
 	}
 
 	// get all role id and permission id 
+	@PreAuthorize("hasRole('admingetlist')")
 	@GetMapping
 	public List<RolePermissionEntity>getall()
 	{
@@ -50,6 +53,7 @@ public class RolePermissionController
 	}
 	
 	// update role id and permission id
+	@PreAuthorize("hasRole('admingetlist')")
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody RolePermissionRequest rolePermissionRequest)
 	{
@@ -65,6 +69,7 @@ public class RolePermissionController
 	}
 	
 	// delete role id and permission id 
+	@PreAuthorize("hasRole('admingetlist')")
 	@DeleteMapping
 	public ResponseEntity<?> delete(@RequestBody RolePermissionRequest rolePermissionRequest)
 	{

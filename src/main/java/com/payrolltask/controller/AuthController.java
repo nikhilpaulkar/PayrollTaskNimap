@@ -92,10 +92,9 @@ public class AuthController
 		{
 			Users user = userRepository.findByEmailContainingIgnoreCase(email);
              
-		//if (PasswordValidator.isValid(password))
-		//{
-                System.out.println("password");
-				
+		if (PasswordValidator.isValid(password))
+		{
+               
 				if (user == null)
 				{
 					this.userServiceImpl.createuser(userDto);
@@ -108,13 +107,13 @@ public class AuthController
 							new ErrorResponseDto("User Email Id Already Exist", "please enter new email"),
 							HttpStatus.BAD_REQUEST);
 				}
-			//}
-//			else 
-//			{
-//
-//				return new  ResponseEntity<>(new ErrorResponseDto(
-//						"Password should have Minimum 8 charaters","Password validation not done"),HttpStatus.BAD_REQUEST);
-//			}
+			}
+			else 
+			{
+
+				return new  ResponseEntity<>(new ErrorResponseDto(
+						"Password should have Minimum 8 charaters, one lowercase letter, one number and one special character and no white spaces","Password validation not done"),HttpStatus.BAD_REQUEST);
+			}
 
 		} 
 		else 

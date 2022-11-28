@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class PasswordValidator 
 {
 	// digit + lowercase char + uppercase char + punctuation + symbol=no white space
-    private static final String PASSWORD_PATTERN = "^(?=.[a-z])(?=.[A-Z])(?=.\\d)(?=.[@$!%?&])[A-Za-z\\d@$!%?&]{8,}$";
+    private static final String PASSWORD_PATTERN = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
 
     private static final Pattern PATTERN = Pattern.compile(PASSWORD_PATTERN);
 
@@ -22,5 +22,13 @@ public class PasswordValidator
          Matcher matcher = mail.matcher(email);
          return matcher.matches();
 	}
+ 
+	private static final String NUMBER_FORMAT = "^[1-9]\\d*$";
+	private static final Pattern NUMBER = Pattern.compile(NUMBER_FORMAT);
 
+	public static boolean isValidNumber(final String numberId) {
+		Matcher matcher = NUMBER.matcher(numberId);
+
+		return matcher.matches();
+	}
 }

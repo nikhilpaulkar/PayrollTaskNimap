@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ public class UserRoleController
 	 private UserRoleServiceInterface userRoleServiceInterface;
 	
 	// add data
+	@PreAuthorize("hasRole('admingetlist')")
 	@PostMapping
 	public ResponseEntity<?>add(@RequestBody UserRoleRequest userrolerequest )
 	{
@@ -45,6 +47,7 @@ public class UserRoleController
 	
 	
 	// get all data role id and role id 
+	@PreAuthorize("hasRole('admingetlist')")
 	@GetMapping
 	public ResponseEntity<?> getAll(
 			@RequestParam(defaultValue = "") String search,
@@ -65,6 +68,7 @@ public class UserRoleController
 	
 	
 	 // update role id 
+	 @PreAuthorize("hasRole('admingetlist')")
 	 @PutMapping("/update")
 	 public ResponseEntity<?>updateuserrole( @RequestBody UserRoleRequest  userrolerequest)
 	 {
@@ -78,6 +82,7 @@ public class UserRoleController
 			}
 		}
 	 // delete user id and role id 
+	 @PreAuthorize("hasRole('admingetlist')")
 	 @DeleteMapping
 	 public ResponseEntity<?>deleteuserroles (@RequestBody UserRoleRequest userrolerequest)
 	  {
@@ -93,7 +98,7 @@ public class UserRoleController
 
 	 
 	 
-	 
+	   @PreAuthorize("hasRole('admingetlist')")
 	   @GetMapping("/get")
 		public ResponseEntity<?> getAllusers(
 				@RequestParam(defaultValue = "") String search,
@@ -106,7 +111,7 @@ public class UserRoleController
 			Page<UserRoleDto> entity= userRoleServiceInterface.findAllRoleList(search,pageNumber,pageSize,user_id,role_id);
 			if(entity.getTotalElements()!=0)
 			{
-				return new ResponseEntity<>(new SucessResponseDto("User-JOB List","Success", entity.getContent()),HttpStatus.ACCEPTED);
+				return new ResponseEntity<>(new SucessResponseDto("User List","Success", entity.getContent()),HttpStatus.ACCEPTED);
 			}
 			else
 			{

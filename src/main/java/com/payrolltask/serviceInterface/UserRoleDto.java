@@ -6,5 +6,5 @@ public interface UserRoleDto
   public Long getuser_id();
   public Long getrole_id();
   public String getEmail();
-  public String roleName();
+  public String getrole_name();
 }
