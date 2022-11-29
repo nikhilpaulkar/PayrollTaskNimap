@@ -29,7 +29,7 @@ public class UserController
   private UserServiceInterface  userServiceInterface;
   
     //get all users With Pagination
-    @PreAuthorize("hasRole('admingetlist')")
+   
 	@GetMapping()
 	public ResponseEntity<?> getAllusers(
 			@RequestParam(defaultValue = "") String search,
@@ -49,7 +49,7 @@ public class UserController
 	}
   
 	// get user by id
-    @PreAuthorize("hasRole('admingetlist')")
+    
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getUserById( @PathVariable Long id)
 	{
@@ -66,7 +66,7 @@ public class UserController
 	
 	
 	//update User by id
-    @PreAuthorize("hasRole('admingetlist')")
+   
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateDataByUserId(@RequestBody UserDto userDto,@PathVariable Long id)
 	{
@@ -83,7 +83,7 @@ public class UserController
 		}
 
 	// delete by id
-    @PreAuthorize("hasRole('admingetlist')")
+   
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable Long id)
 	{

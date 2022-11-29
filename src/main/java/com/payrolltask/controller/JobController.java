@@ -51,7 +51,7 @@ public class JobController
 	  }
 	}
   
-    @PreAuthorize("hasRole('admingetlist')")
+    @PreAuthorize("hasRole('JobView')")
 	@GetMapping(ApiUrls.GET_ALL)
 	public ResponseEntity<?> getAlljob(
 			@RequestParam(defaultValue = "") String search,
@@ -70,7 +70,7 @@ public class JobController
 	    }
 	 }
 
-    @PreAuthorize("hasRole('admingetlist')")
+    @PreAuthorize("hasRole('JobView')")
 	@GetMapping("/{id}")
 	public ResponseEntity<?>getjobid(@PathVariable Long id)
 	{
@@ -85,7 +85,7 @@ public class JobController
 	}
 	
 	
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('JobUpdate')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?>updateByJobId(@RequestBody JobDto jobDto,@PathVariable Long id)
 	{

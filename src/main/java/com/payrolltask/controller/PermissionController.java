@@ -32,7 +32,7 @@ public class PermissionController
 	private PermissionServiceInterface permissionServiceInterface;
 	
 	// Add Permission
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('AddPermission')")
 	@PostMapping()
 	public ResponseEntity<?>addPermission(@RequestBody PermissionDto permissionDto)
 	{
@@ -47,7 +47,7 @@ public class PermissionController
 	}
 	
 	// Get All Permission With Pagination
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('PermissionViews')")
 	@GetMapping()
 	public ResponseEntity<?>getAllPermission(
 			@RequestParam(defaultValue = "") String search,
@@ -69,7 +69,7 @@ public class PermissionController
       }
 	
     // get Permission BY id 
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('PermissionViews')")
 	@GetMapping("/{id}")
 	public ResponseEntity<?>getPermissionbyid(@PathVariable Long id)
 	{
@@ -83,7 +83,7 @@ public class PermissionController
 		}
 	}
 	
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('PermissionUpdate')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?>updatePermission(@RequestBody PermissionDto permissionDto, @PathVariable Long id)
 	{
@@ -100,7 +100,7 @@ public class PermissionController
  			
 	}
 	
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('PermissionDelete')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?>deletepermissionbyid(@PathVariable Long id)
 	{

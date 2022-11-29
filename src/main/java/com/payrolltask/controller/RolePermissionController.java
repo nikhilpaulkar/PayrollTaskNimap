@@ -28,7 +28,7 @@ public class RolePermissionController
 	private RolePermissionServiceInterface rolePermissionServiceInterface;
 	
 	// add permission id and role id
-	@PreAuthorize("hasRole('admingetlist')")
+	//@PreAuthorize("hasRole('RolePermissionAdd')")
 	@PostMapping
 	private ResponseEntity<?> add(@RequestBody RolePermissionRequest rolePermissionRequest)
 	{
@@ -45,7 +45,7 @@ public class RolePermissionController
 	}
 
 	// get all role id and permission id 
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('RolePermissionViews')")
 	@GetMapping
 	public List<RolePermissionEntity>getall()
 	{
@@ -53,7 +53,7 @@ public class RolePermissionController
 	}
 	
 	// update role id and permission id
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('RolePermissionUpdate')")
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody RolePermissionRequest rolePermissionRequest)
 	{
@@ -69,7 +69,7 @@ public class RolePermissionController
 	}
 	
 	// delete role id and permission id 
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('RolePermissionDelete')")
 	@DeleteMapping
 	public ResponseEntity<?> delete(@RequestBody RolePermissionRequest rolePermissionRequest)
 	{

@@ -31,7 +31,7 @@ public class UserRoleController
 	 private UserRoleServiceInterface userRoleServiceInterface;
 	
 	// add data
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('UserRoleAdd')")
 	@PostMapping
 	public ResponseEntity<?>add(@RequestBody UserRoleRequest userrolerequest )
 	{
@@ -47,7 +47,7 @@ public class UserRoleController
 	
 	
 	// get all data role id and role id 
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('UserRoleViews')")
 	@GetMapping
 	public ResponseEntity<?> getAll(
 			@RequestParam(defaultValue = "") String search,
@@ -68,7 +68,7 @@ public class UserRoleController
 	
 	
 	 // update role id 
-	 @PreAuthorize("hasRole('admingetlist')")
+	 @PreAuthorize("hasRole('UserRoleUpdate')")
 	 @PutMapping("/update")
 	 public ResponseEntity<?>updateuserrole( @RequestBody UserRoleRequest  userrolerequest)
 	 {
@@ -82,7 +82,7 @@ public class UserRoleController
 			}
 		}
 	 // delete user id and role id 
-	 @PreAuthorize("hasRole('admingetlist')")
+	 @PreAuthorize("hasRole('UserRoleDelete')")
 	 @DeleteMapping
 	 public ResponseEntity<?>deleteuserroles (@RequestBody UserRoleRequest userrolerequest)
 	  {

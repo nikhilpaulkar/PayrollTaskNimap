@@ -34,7 +34,7 @@ public class RoleController
 	private RoleServiceInterface roleServiceInterface;
 	
 	// add role 
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('AddRole')")
 	@PostMapping()
 	public ResponseEntity<?>addrole(@RequestBody RoleDto roleDto)
 	{
@@ -52,7 +52,7 @@ public class RoleController
 	
 	
 	// get all roles with pagination
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('RoleViews')")
 	@GetMapping()
 	public ResponseEntity<?> getAllusers(
 			@RequestParam(defaultValue = "") String search,
@@ -72,7 +72,7 @@ public class RoleController
 	}
 	
 	// get by id 
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('RoleViews')")
 	@GetMapping("/{id}")
 	public ResponseEntity<?>getRoleid(@PathVariable Long id)
 	{
@@ -87,7 +87,7 @@ public class RoleController
 	   }
 	
 	// update by role id 
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('RoleUpdate')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?>updateByRoleId(@RequestBody RoleDto roleDto,@PathVariable Long id)
 	{
@@ -105,7 +105,7 @@ public class RoleController
 	}
 	
 	// delete by role id 
-	@PreAuthorize("hasRole('admingetlist')")
+	@PreAuthorize("hasRole('RoleDelete')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleterole(@PathVariable Long id)
 	{
@@ -139,7 +139,7 @@ public class RoleController
 //	    }
 	//}
 	
-	@PreAuthorize("hasRole('admingetlist')")
+	
 	@GetMapping("/permissions/user/{id}")
 	public ResponseEntity<?> getPermissionById(@PathVariable Long id)
 	{

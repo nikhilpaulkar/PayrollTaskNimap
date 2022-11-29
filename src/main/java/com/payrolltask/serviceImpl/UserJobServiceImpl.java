@@ -40,7 +40,8 @@ public class UserJobServiceImpl implements UserJobServiceInterface
   public void applyjob(UserJobDto userJobDto,Long id)
   {
 	  
-	  Users user=userRepository.findById(id).orElseThrow();
+	  Users user=userRepository.findById(id).orElseThrow(()->
+	  new ResourceNotFoundException("User Not Found"));
 	  
 	  ArrayList<JobEntity> jobEntity = new ArrayList<>();
 	  for(int i=0;i<userJobDto.getJobId().size();i++)

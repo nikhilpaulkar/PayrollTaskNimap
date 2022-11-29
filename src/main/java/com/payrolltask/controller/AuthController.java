@@ -159,7 +159,7 @@ public class AuthController
 				
 			} catch (Exception e)
 			{
-				return new ResponseEntity<>(new ErrorResponseDto("user not found", "not found "), HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(new ErrorResponseDto("invalid email or password", "not found "), HttpStatus.NOT_FOUND);
 			}
 
 		}
