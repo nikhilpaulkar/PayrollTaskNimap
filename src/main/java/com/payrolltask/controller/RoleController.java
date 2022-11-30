@@ -143,7 +143,9 @@ public class RoleController
 	@GetMapping("/permissions/user/{id}")
 	public ResponseEntity<?> getPermissionById(@PathVariable Long id)
 	{
+		System.out.println("USer"+id);
 		ArrayList<String>job= this.roleServiceInterface.getPermissionByUserId(id);
+		
 		return new ResponseEntity<>(job,HttpStatus.OK);
 	}
 

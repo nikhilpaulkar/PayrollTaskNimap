@@ -99,6 +99,7 @@ public class RoleServiceImpl implements RoleServiceInterface
 	public ArrayList<String> getPermissionByUserId(Long id)
 	{
 		ArrayList<RoleIdListDto> roleIds = userRoleRepository.findByTaskUserId(id, RoleIdListDto.class);
+		System.out.println(""+id);
 		ArrayList<Long> roles = new ArrayList<>();
 
 		for (int i = 0; i < roleIds.size(); i++)

@@ -15,15 +15,15 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.payrolltask.entity.Users;
+import com.payrolltask.entity.UserJobEntity;
 
 public class ExcelExportUtils
 {
 	private XSSFWorkbook workbook;
     private XSSFSheet sheet;
-    private List<Users> customerList;
+    private List<UserJobEntity> customerList;
 
-    public ExcelExportUtils(List<Users> customerList) {
+    public ExcelExportUtils(List<UserJobEntity> customerList) {
         this.customerList = customerList;
         workbook = new XSSFWorkbook();
     }
@@ -62,12 +62,16 @@ public class ExcelExportUtils
         font.setBold(true);
         font.setFontHeight(16);
         style.setFont(font);
-        createCell(row, 0, "ID", style);
-        createCell(row, 1, "Email", style);
-        createCell(row, 2, "is_active", style);
-        createCell(row, 3, "Password", style);
-        createCell(row, 4, "UserName", style);
-
+        createCell(row, 0, "UserID", style);
+        createCell(row, 1, "UserEmail", style);
+        createCell(row, 2, "UserName", style);
+        createCell(row, 3, "JobId", style);
+        createCell(row, 4, "JobTitle", style);
+        createCell(row, 5, "Location",style);
+        createCell(row, 6, "UserId",style);
+        createCell(row, 7, "UserEmail",style);
+        createCell(row, 8, "UserName", style);
+        
 
 
     }
@@ -79,14 +83,21 @@ public class ExcelExportUtils
         font.setFontHeight(14);
         style.setFont(font);
 
-        for (Users customer : customerList){
+        for (UserJobEntity customer : customerList){
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
-            createCell(row, columnCount++, customer.getId(), style);
-            createCell(row, columnCount++, customer.getEmail(), style);
-            createCell(row, columnCount++, customer.isIsactive(), style);
-            createCell(row, columnCount++, customer.getPassword(), style);
-            createCell(row, columnCount++, customer.getName(), style);
+            createCell(row, columnCount++,  customer.getUser().getId(), style);
+            createCell(row, columnCount++,  customer.getUser().getEmail(),style);
+            createCell(row, columnCount++,  customer.getUser().getName(), style);
+            createCell(row, columnCount++,  customer.getJobs().getId(),style);
+            createCell(row, columnCount++,  customer.getJobs().getJobtitle(),style);
+            createCell(row, columnCount++,  customer.getJobs().getLocation(),style);
+            createCell(row, columnCount++,  customer.getJobs().getRecruiter().getId(),style);
+            createCell(row, columnCount++,  customer.getJobs().getRecruiter().getEmail(),style);
+
+            createCell(row, columnCount++,  customer.getJobs().getRecruiter().getName(),style);
+
+
 
         }
 

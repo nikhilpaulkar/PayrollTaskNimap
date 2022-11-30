@@ -16,7 +16,6 @@ import com.payrolltask.entity.Users;
 import com.payrolltask.repository.AuthRepository;
 import com.payrolltask.serviceInterface.AuthInterface;
 import com.payrolltask.serviceInterface.RoleServiceInterface;
-
 @Service
 public class AuthServiceImpl implements AuthInterface
 {
@@ -36,11 +35,28 @@ public class AuthServiceImpl implements AuthInterface
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException
   {
-	  Users user = null;
-	  user=authRepository.findByEmail(email);
+	  Users user =null;
+	  
+		if (!cache.isKeyExist(email,email))
+		{
+			
+          
+			user = authRepository.findByEmail(email);
+			System.out.println("Database");
+			//cache.addInCache(email, email, user);
+
+		} 	
+		else
+		{
+
+			user = (Users) cache.getFromCache(email, email); 
+			System.out.println("Cache");
+			
+		}
+	 
 	  if(user==null)
 	  {
-		 throw new UsernameNotFoundException("user not found with"+email);
+		 throw new UsernameNotFoundException("user not found with Email"+email);
 	  }
 	  
 	 return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),getAuthority(user));
@@ -50,11 +66,11 @@ public class AuthServiceImpl implements AuthInterface
   }
 
 
-  @Override
-  public boolean comaparePassword(String email, String hashpassword) 
+//  @Override
+  public boolean comparePassword(String password, String hashpassword) 
   {
 	
-	return passwordEncoder.matches(hashpassword, hashpassword);
+	return passwordEncoder.matches(password, hashpassword);
   }
 
 
@@ -75,14 +91,14 @@ public class AuthServiceImpl implements AuthInterface
  }
   
   
-  @SuppressWarnings("unchecked")
-private ArrayList<SimpleGrantedAuthority> getAuthority(Users user) 
-  {
-
+    @SuppressWarnings("unchecked")
+    private ArrayList<SimpleGrantedAuthority> getAuthority(Users user) 
+    {
+            
 		ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-		//if (!cache.isKeyExist(user.getId() + "permission", user.getId() + "permission"))
-		//{
+		if (!cache.isKeyExist(user.getId() + "permission", user.getId() + "permission"))
+		{
 		
 
 			ArrayList<SimpleGrantedAuthority> authorities1 = new ArrayList<>();
@@ -97,18 +113,22 @@ private ArrayList<SimpleGrantedAuthority> getAuthority(Users user)
 			
 			cache.addInCache(user.getId() + "permission", user.getId() + "permission", authorities1);
           
-		//} 
-       //else 
-	   //{
+		} 
+       else 
+	   {
              
 			authorities = (ArrayList<SimpleGrantedAuthority>) cache.getFromCache(user.getId() + "permission", user.getId() + "permission");
            
-		//}
+		}
 
 		return authorities;
                
 	}
-	
+
+
+  
+
+
 	
 	
   

@@ -9,7 +9,7 @@ import com.payrolltask.entity.Users;
 
 public interface AuthInterface
 {
-	public boolean comaparePassword(String email, String hashpassword);
+	public boolean comparePassword(String password, String hashpassword);
 
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
 

@@ -48,7 +48,7 @@ public class JobServiceImpl implements JobServiceInterface
 		
        jobRepository.save(jobEntity);
        
-     
+       
   }
 
   @Override

@@ -135,15 +135,15 @@ public class AuthController
 			{
 	            Users user = userServiceImpl.FindByEmail(authenticationRequest.getEmail());
 				
-				
-				if (authServiceImpl.comaparePassword(user.getPassword(), authenticationRequest.getPassword()));
+				if (this.authServiceImpl.comparePassword(user.getPassword(), authenticationRequest.getPassword()));
 				{
+					
 					UserDetails userDetails=this.authServiceImpl.loadUserByUsername(authenticationRequest.getEmail());
-				   
 					
 					String token = jwtTokenUtil.generateToken(userDetails);
 				    LoggerDto logger = new LoggerDto();
 					logger.setToken(token);
+					
 					Calendar calender = Calendar.getInstance();
 					calender.add(Calendar.MINUTE, 5);
 					logger.setExpiredAt(calender.getTime());

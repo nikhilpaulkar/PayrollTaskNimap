@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.payrolltask.entity.Users;
+import com.payrolltask.entity.UserJobEntity;
 import com.payrolltask.repository.ExcelRepo;
 import com.payrolltask.utility.ExcelExportUtils;
 
@@ -19,9 +19,9 @@ public class ExcelServiceImpls
 	@Autowired
 	private ExcelRepo excelRepo;
 	
-	 public List<Users> exportCustomerToExcel(HttpServletResponse response) throws IOException
+	 public List<UserJobEntity> exportCustomerToExcel(HttpServletResponse response) throws IOException
 	 {
-	        List<Users> customers = excelRepo.findAll();
+	        List<UserJobEntity> customers = excelRepo.findAll();
 	        ExcelExportUtils exportUtils = new ExcelExportUtils(customers);
 	        exportUtils.exportDataToExcel(response);
 	        return customers;

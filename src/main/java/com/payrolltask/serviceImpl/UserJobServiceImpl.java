@@ -56,7 +56,7 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 	     emailServiceImpl.mail(user.getEmail(), "apply  job  successfully",job.getJobtitle());
 	  
 	     String email= job.getRecruiter().getEmail();
-	     emailServiceImpl.mail(email, "apply  job  successfully",job.getJobtitle());
+	     emailServiceImpl.mail(email, "candidate has apply  job  successfully",job.getJobtitle());
 
 	     userJobRepository.save(userJob);
 	  }				
