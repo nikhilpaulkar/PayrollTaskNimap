@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +27,6 @@ public class UserController
   @Autowired
   private UserServiceInterface  userServiceInterface;
   
-    //get all users With Pagination
    
 	@GetMapping()
 	public ResponseEntity<?> getAllusers(
@@ -48,8 +46,7 @@ public class UserController
 	    }
 	}
   
-	// get user by id
-    
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getUserById( @PathVariable Long id)
 	{
@@ -65,7 +62,7 @@ public class UserController
   
 	
 	
-	//update User by id
+
    
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateDataByUserId(@RequestBody UserDto userDto,@PathVariable Long id)
@@ -82,7 +79,7 @@ public class UserController
 				
 		}
 
-	// delete by id
+	
    
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable Long id)

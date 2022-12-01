@@ -75,8 +75,6 @@ public class JobEntity
 		this.isactive = isactive;
 	}
 
-	
-
     public List<UserJobEntity> getUserJobEntity() {
 		return userJobEntity;
 	}
@@ -84,10 +82,6 @@ public class JobEntity
 	public void setUserJobEntity(List<UserJobEntity> userJobEntity) {
 		this.userJobEntity = userJobEntity;
 	}
-
-	
-	
-	
 
 	public Date getUpdatedat() {
 		return updatedat;
@@ -105,9 +99,6 @@ public class JobEntity
 		this.createdat = createdat;
 	}
 
-	
-
-	
 	public Users getRecruiter() {
 		return recruiter;
 	}

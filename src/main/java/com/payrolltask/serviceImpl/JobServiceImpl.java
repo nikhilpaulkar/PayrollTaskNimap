@@ -35,8 +35,8 @@ public class JobServiceImpl implements JobServiceInterface
   public void addjob(JobDto jobDto,Long id) 
   {
 	
-	  Users user=userRepository.findById(id).orElseThrow(()->
-	  new ResourceNotFoundException("Not found User"));
+	   Users user=userRepository.findById(id).orElseThrow(()->
+	   new ResourceNotFoundException("User Not Found"));
 	  
 	    
 	   JobEntity jobEntity=new JobEntity();
@@ -71,8 +71,8 @@ public class JobServiceImpl implements JobServiceInterface
   @Override
   public List<IJobListDto> getjobById(Long id)
   {
-	   JobEntity jobEntity=jobRepository.findById(id).orElseThrow(()->
-	   new ResourceNotFoundException("job id not found"));
+	    JobEntity jobEntity=jobRepository.findById(id).orElseThrow(()->
+	    new ResourceNotFoundException("job id not found"));
 	  
 	  
 		List<IJobListDto> jobDtos=jobRepository.findById(id,IJobListDto.class);
@@ -84,8 +84,8 @@ public class JobServiceImpl implements JobServiceInterface
   @Override
   public JobDto updatejob(JobDto jobDto, Long id) 
   {
-	  JobEntity jobEntity=jobRepository.findById(id).orElseThrow(()->
-	  new ResourceNotFoundException("job id not found"));
+	   JobEntity jobEntity=jobRepository.findById(id).orElseThrow(()->
+	   new ResourceNotFoundException("job id not found"));
 	 
 	   jobEntity.setJobtitle(jobDto.getJobtitle());
 	   jobEntity.setLocation(jobDto.getLocation());
@@ -115,9 +115,9 @@ public class JobServiceImpl implements JobServiceInterface
 	  Users user=userRepository.findById(id).orElseThrow(()->
 	  new ResourceNotFoundException("User Not found"));
 	  
-	 List<IRecruiterDto> list= jobRepository.findgetJobbyRecruiter(user,IRecruiterDto.class);
+	  List<IRecruiterDto> list= jobRepository.findgetJobbyRecruiter(user,IRecruiterDto.class);
     
-     return list;
+      return list;
              
       
 	

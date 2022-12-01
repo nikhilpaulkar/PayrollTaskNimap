@@ -54,7 +54,7 @@ public class JobController
     @PreAuthorize("hasRole('JobView')")
 	@GetMapping(ApiUrls.GET_ALL)
 	public ResponseEntity<?> getAlljob(
-			@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "")  String search,
 			@RequestParam(defaultValue = "1") String pageNumber,
 			@RequestParam(defaultValue = "5") String pageSize)
 	 {

@@ -99,9 +99,6 @@ public class UserJobEntity
 		this.createdat = createdat;
 	}
 
-
-
-
 	public UserJobEntity(Long id, Users user, Date updatedat, Date createdat, JobEntity jobs, boolean isactive) {
 		super();
 		this.id = id;

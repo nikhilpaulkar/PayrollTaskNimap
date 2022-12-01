@@ -53,10 +53,10 @@ public class UserJobServiceImpl implements UserJobServiceInterface
 	     UserJobEntity userJob=new UserJobEntity();
 	     userJob.setJobs(job);
 	     userJob.setUser(user);
-	     emailServiceImpl.mail(user.getEmail(), "apply  job  successfully",job.getJobtitle());
+	     emailServiceImpl.mail(user.getEmail(), "apply  job  Successfully",job.getJobtitle());
 	  
 	     String email= job.getRecruiter().getEmail();
-	     emailServiceImpl.mail(email, "candidate has apply  job  successfully",job.getJobtitle());
+	     emailServiceImpl.mail(email, "candidate has apply  job  Successfully",job.getJobtitle());
 
 	     userJobRepository.save(userJob);
 	  }				

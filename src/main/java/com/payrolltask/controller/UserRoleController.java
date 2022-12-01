@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.payrolltask.dto.ErrorResponseDto;
 import com.payrolltask.dto.SucessResponseDto;
 import com.payrolltask.payload.UserRoleRequest;
-import com.payrolltask.serviceInterface.IUserJobListDto;
 import com.payrolltask.serviceInterface.IUserRoleListDto;
 import com.payrolltask.serviceInterface.UserRoleDto;
 import com.payrolltask.serviceInterface.UserRoleServiceInterface;

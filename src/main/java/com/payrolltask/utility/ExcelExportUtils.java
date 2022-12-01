@@ -23,12 +23,14 @@ public class ExcelExportUtils
     private XSSFSheet sheet;
     private List<UserJobEntity> customerList;
 
-    public ExcelExportUtils(List<UserJobEntity> customerList) {
+    public ExcelExportUtils(List<UserJobEntity> customerList)
+    {
         this.customerList = customerList;
         workbook = new XSSFWorkbook();
     }
 
-    private void createCell(Row row, int columnCount, Object value, CellStyle style){
+    private void createCell(Row row, int columnCount, Object value, CellStyle style)
+    {
         sheet.autoSizeColumn(columnCount);
         Cell cell = row.createCell(columnCount);
         if (value instanceof Integer){
@@ -45,7 +47,8 @@ public class ExcelExportUtils
         cell.setCellStyle(style);
     }
 
-    private void createHeaderRow(){
+    private void createHeaderRow()
+    {
         sheet   = workbook.createSheet("Customer Information");
         Row row = sheet.createRow(0);
         CellStyle style = workbook.createCellStyle();
@@ -83,7 +86,8 @@ public class ExcelExportUtils
         font.setFontHeight(14);
         style.setFont(font);
 
-        for (UserJobEntity customer : customerList){
+        for (UserJobEntity customer : customerList)
+        {
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
             createCell(row, columnCount++,  customer.getUser().getId(), style);
@@ -94,10 +98,7 @@ public class ExcelExportUtils
             createCell(row, columnCount++,  customer.getJobs().getLocation(),style);
             createCell(row, columnCount++,  customer.getJobs().getRecruiter().getId(),style);
             createCell(row, columnCount++,  customer.getJobs().getRecruiter().getEmail(),style);
-
             createCell(row, columnCount++,  customer.getJobs().getRecruiter().getName(),style);
-
-
 
         }
 
