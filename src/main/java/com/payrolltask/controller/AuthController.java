@@ -234,17 +234,13 @@ public class AuthController
 		{
 			String password = modelDto.getPassword();
 
-			{
-				if (PasswordValidator.isValid(password))
+			
+				if (!PasswordValidator.isValid(password))
 				{
-
-				 }
-				else
-				{
-					throw new Exception("not found");
+					throw new Exception("Password is not valid");
+				
 				}
-				}
-		}
+			}
 
 		catch (Exception e)
 		 {

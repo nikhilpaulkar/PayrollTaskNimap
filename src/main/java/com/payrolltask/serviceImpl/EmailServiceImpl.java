@@ -57,8 +57,8 @@ public class EmailServiceImpl
 	public int generateOTP() 
 	{
 
-		int min = 1000;
-		int max = 9999;
+		int min = 100000;
+		int max = 999999;
 
 		int random_int = (int) Math.floor(Math.random() * (max - min + 1) + min);
 		return random_int;

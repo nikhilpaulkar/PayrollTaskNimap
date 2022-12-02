@@ -31,8 +31,8 @@ public class UserJobController
   @PostMapping
   public ResponseEntity<?> addUserJob(@RequestBody UserJobDto userJobDto,@RequestAttribute(GlobalFunction.USER_ID) Long id)
   {
-	  try
-	  {
+	   try
+	    { 
 		  userJobServiceInterface.applyjob(userJobDto,id);
 		  
 		  return new ResponseEntity<>(new SucessResponseDto("successfullly applied ","success","successfully applied job"),HttpStatus.ACCEPTED);
@@ -45,11 +45,11 @@ public class UserJobController
     @PreAuthorize("hasRole('admingetlist')")
     @GetMapping()
 	public ResponseEntity<?> getAllusers(
-			@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "")  String search,
 			@RequestParam(defaultValue = "1") String pageNumber,
 			@RequestParam(defaultValue = "5") String pageSize,
-			@RequestParam(defaultValue = "") String userid,
-			@RequestParam(defaultValue = "") String jobid)
+			@RequestParam(defaultValue = "")  String userid,
+			@RequestParam(defaultValue = "")  String jobid)
 	{
 		
 		Page<IUserJobListDto> entity= userJobServiceInterface.getAllcandidate(search,pageNumber,pageSize,userid,jobid);
